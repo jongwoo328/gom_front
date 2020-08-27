@@ -1,3 +1,5 @@
+@import url(//fonts.googleapis.com/earlyaccess/jejugothic.css);          
+
 html,
 body {
 	min-height: 100%;
@@ -9,7 +11,7 @@ body {
 	color: rgb(62, 64, 66);
 	font: inherit;
 	vertical-align: baseline;
-	font-family: 'Spoqa Han Sans', 'Sans-serif';
+	font-family: 'Jeju Gothic', 'Sans-serif';
 	overflow: auto;
 }
 
@@ -51,5 +53,5 @@ button {
 *:after,
 *:before {
 	box-sizing: border-box;
-	font-family: 'Spoqa Han Sans', 'Sans-serif';
+	font-family: 'Jeju Gothic', 'Sans-serif';
 }
