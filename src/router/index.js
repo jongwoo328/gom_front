@@ -14,6 +14,10 @@ const routes = [
 		name: 'SignUp',
 		component: () => import('@/views/accounts/SignUp.vue'),
 	},
+	{
+		path: '/:ariticleId',
+		component: () => import('@/views/articles/ArticleDetailPage.vue'),
+	},
 ];
 
 const router = new VueRouter({
