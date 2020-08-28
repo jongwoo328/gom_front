@@ -9,11 +9,6 @@ const routes = [
 		name: 'articles',
 		component: () => import('@/views/articles/ArticlePage.vue'),
 	},
-	{
-		path: '/signup',
-		name: 'SignUp',
-		component: () => import('@/views/accounts/SignUp.vue'),
-	},
 ];
 
 const router = new VueRouter({
