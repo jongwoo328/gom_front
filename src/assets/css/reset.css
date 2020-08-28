@@ -55,3 +55,7 @@ button {
 	box-sizing: border-box;
 	font-family: 'Jeju Gothic', 'Sans-serif';
 }
+
+input[type="password"] {
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}

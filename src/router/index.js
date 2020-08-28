@@ -10,11 +10,6 @@ const routes = [
 		component: () => import('@/views/articles/ArticlePage.vue'),
 	},
 	{
-		path: '/signup',
-		name: 'SignUp',
-		component: () => import('@/views/accounts/SignUp.vue'),
-	},
-	{
 		path: '/:ariticleId',
 		component: () => import('@/views/articles/ArticleDetailPage.vue'),
 	},

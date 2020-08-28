@@ -8,17 +8,46 @@
 			</router-link>
 			<nav>
 				<ul>
-					<li><router-link :to="{ name: 'SignUp' }">가입하기</router-link></li>
-					<li><a href="">로그인</a></li>
+					<li @click="showSignup">가입하기</li>
+					<li @click="showLogin">로그인</li>
 				</ul>
 			</nav>
 		</div>
+		<SignupModal v-if="showSignupModal" @close="close" />
+		<LoginModal v-if="showLoginModal" @close="close" />
 	</header>
 </template>
 
 <script>
+import SignupModal from '@/components/modal/SignupModal.vue';
+import LoginModal from '@/components/modal/LoginModal.vue';
+
 export default {
 	name: 'Header',
+	components: {
+		SignupModal,
+		LoginModal,
+	},
+	data() {
+		return {
+			showSignupModal: false,
+			showLoginModal: false,
+		};
+	},
+	methods: {
+		close() {
+			this.showLoginModal = false;
+			this.showSignupModal = false;
+		},
+		showLogin() {
+			this.showLoginModal = true;
+			this.showSignupModal = false;
+		},
+		showSignup() {
+			this.showLoginModal = false;
+			this.showSignupModal = true;
+		},
+	},
 };
 </script>
 
@@ -37,9 +66,10 @@ export default {
 
 			li {
 				margin: 0 10px;
+				color: white;
 
-				a {
-					color: white;
+				&:hover {
+					cursor: pointer;
 				}
 			}
 		}
