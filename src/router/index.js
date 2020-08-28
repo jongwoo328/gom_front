@@ -9,6 +9,10 @@ const routes = [
 		name: 'articles',
 		component: () => import('@/views/articles/ArticlePage.vue'),
 	},
+	{
+		path: '/:ariticleId',
+		component: () => import('@/views/articles/ArticleDetailPage.vue'),
+	},
 ];
 
 const router = new VueRouter({
