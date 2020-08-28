@@ -1,5 +1,10 @@
 <template>
-	<input class="common-input" :type="type" :placeholder="placeholder" />
+	<input
+		class="common-input"
+		:type="type"
+		:placeholder="placeholder"
+		:name="name"
+	/>
 </template>
 
 <script>
@@ -14,6 +19,7 @@ export default {
 			type: String,
 			default: '',
 		},
+		name: String,
 	},
 };
 </script>
