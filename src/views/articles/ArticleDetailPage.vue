@@ -60,6 +60,7 @@ export default {
 			this.articleData.title = data.title;
 			this.articleData.auther = data.user.username;
 			this.content = data.content;
+			console.log();
 		},
 	},
 	created() {
