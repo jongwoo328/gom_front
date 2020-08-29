@@ -1,7 +1,9 @@
 <template>
 	<div id="app">
 		<Header></Header>
-		<router-view />
+		<main class="container">
+			<router-view />
+		</main>
 	</div>
 </template>
 
@@ -15,7 +17,10 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import './assets/css/reset.css';
 @import './assets/css/common.css';
+.container {
+	margin-top: 2rem;
+}
 </style>

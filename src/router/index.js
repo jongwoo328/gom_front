@@ -13,6 +13,11 @@ const routes = [
 		path: '/:ariticleId',
 		component: () => import('@/views/articles/ArticleDetailPage.vue'),
 	},
+	{
+		path: '/create',
+		name: 'ArticleCreate',
+		component: () => import('@/views/articles/CreateArticlePage.vue'),
+	},
 ];
 
 const router = new VueRouter({
