@@ -2,12 +2,12 @@
 	<section class="container">
 		<section class="aritcle-container">
 			<header class="article-header">
-				<h1>가나다라마바사</h1>
-				<p>황영준 | 2018.08.08 15:15 | 조회 20</p>
+				<h1>{{ articleData.title }}</h1>
+				<p>{{ articleData.auther }} | {{ articleData.data }}</p>
 				<span class="article-header-underline"></span>
 			</header>
 			<article class="article-body">
-				컨텐트지롱 ㅎㅎ
+				{{ articleData.content }}
 			</article>
 			<section class="bookmark-box">
 				<p><i class="icon ion-md-bookmark"></i></p>
@@ -38,9 +38,32 @@
 </template>
 
 <script>
+import { fetchArticle } from '@/api/article.js';
 export default {
+	data() {
+		return {
+			articleData: {
+				title: null,
+				auther: null,
+				date: null,
+				content: null,
+			},
+			comment: [],
+		};
+	},
 	props: {
-		article: Object,
+		articleId: Number,
+	},
+	methods: {
+		async fetchData() {
+			const { data } = await fetchArticle(2);
+			this.articleData.title = data.title;
+			this.articleData.auther = data.user.username;
+			this.content = data.content;
+		},
+	},
+	created() {
+		this.fetchData();
 	},
 };
 </script>
