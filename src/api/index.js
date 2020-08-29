@@ -12,8 +12,8 @@ function createWithAuth(url, options) {
 	return instance;
 }
 
-export const noAuth = create(`${process.env.VUE_APP_API_URL}`);
-export const auth = createWithAuth(`${process.env.VUE_APP_API_URL}`);
+export const noAuth = create(`${process.env.VUE_APP_API_URL}/`);
+export const auth = createWithAuth(`${process.env.VUE_APP_API_URL}/`);
 // export const study = createWithAuth(`${process.env.VUE_APP_API_URL}study/`);
 // export const baseAuth = createWithAuth(`${process.env.VUE_APP_API_URL}`);
 // export const alarm = createWithAuth(`${process.env.VUE_APP_API_URL}`);

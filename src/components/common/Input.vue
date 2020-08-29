@@ -4,6 +4,10 @@
 		:type="type"
 		:placeholder="placeholder"
 		:name="name"
+		:autocomplete="autocomplete"
+		:minlength="minlength"
+		:maxlength="maxlength"
+		:size="size"
 	/>
 </template>
 
@@ -20,6 +24,16 @@ export default {
 			default: '',
 		},
 		name: String,
+		autocomplete: {
+			type: String,
+			default: 'off',
+		},
+		minlength: {
+			type: Number,
+			default: 1,
+		},
+		maxlength: Number,
+		size: Number,
 	},
 };
 </script>
