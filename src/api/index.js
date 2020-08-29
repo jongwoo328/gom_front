@@ -12,8 +12,16 @@ function createWithAuth(url, options) {
 	return instance;
 }
 
+<<<<<<< HEAD
 export const noAuth = create(`${process.env.VUE_APP_API_URL}/`);
 export const auth = createWithAuth(`${process.env.VUE_APP_API_URL}/`);
+=======
+export const noAuth = create(`${process.env.VUE_APP_API_URL}`);
+export const auth = createWithAuth(`${process.env.VUE_APP_API_URL}`);
+export const article = createWithAuth(
+	`${process.env.VUE_APP_API_URL}/articles`,
+);
+>>>>>>> fdce16d486fa9bd0eea96babf31cb27dc99752c0
 // export const study = createWithAuth(`${process.env.VUE_APP_API_URL}study/`);
 // export const baseAuth = createWithAuth(`${process.env.VUE_APP_API_URL}`);
 // export const alarm = createWithAuth(`${process.env.VUE_APP_API_URL}`);
