@@ -8,8 +8,18 @@
 			</router-link>
 			<nav>
 				<ul>
-					<li @click="showSignup">가입하기</li>
-					<li @click="showLogin">로그인</li>
+					<li v-if="!this.$store.getters.isLoggedIn" @click="showSignup">
+						가입하기
+					</li>
+					<li v-if="!this.$store.getters.isLoggedIn" @click="showLogin">
+						로그인
+					</li>
+					<li
+						v-if="this.$store.getters.isLoggedIn"
+						@click="$store.dispatch('logout')"
+					>
+						로그아웃
+					</li>
 				</ul>
 			</nav>
 		</div>
