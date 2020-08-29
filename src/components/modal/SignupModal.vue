@@ -226,7 +226,6 @@ export default {
 				password2: password2,
 			});
 			if (res.status === 201) {
-				console.log(res);
 				this.$store.dispatch('login', res.data);
 				this.$emit('close');
 			} else if (res.status === 400) {
@@ -239,7 +238,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @media screen and (min-width: 576px) {
 	.modal-container {
 		min-width: 500px;

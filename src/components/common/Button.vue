@@ -27,6 +27,7 @@ export default {
 	min-height: 30px;
 	border: 1px solid $green;
 	margin: 0 5px 0 5px;
+	padding: 0 5px 0 5px;
 
 	&:disabled {
 		opacity: 0.5;
