@@ -8,22 +8,19 @@
 			</router-link>
 			<nav>
 				<ul>
-					<li v-if="!this.$store.getters.isLoggedIn" @click="showSignup">
+					<li v-if="!this.isLoggedIn" @click="showSignup">
 						가입하기
 					</li>
-					<li v-if="!this.$store.getters.isLoggedIn" @click="showLogin">
+					<li v-if="!this.isLoggedIn" @click="showLogin">
 						로그인
 					</li>
-					<li
-						v-if="this.$store.getters.isLoggedIn"
-						@click="$store.dispatch('logout')"
-					>
+					<li v-if="this.isLoggedIn" @click="$store.dispatch('logout')">
 						로그아웃
 					</li>
 				</ul>
 			</nav>
 		</div>
-		<SignupModal v-if="showSignupModal" @close="close" />
+		<SignupModal @login="reload" v-if="showSignupModal" @close="close" />
 		<LoginModal v-if="showLoginModal" @close="close" />
 	</header>
 </template>
@@ -31,6 +28,7 @@
 <script>
 import SignupModal from '@/components/modal/SignupModal.vue';
 import LoginModal from '@/components/modal/LoginModal.vue';
+import { mapGetters } from 'vuex';
 
 export default {
 	name: 'Header',
@@ -43,6 +41,9 @@ export default {
 			showSignupModal: false,
 			showLoginModal: false,
 		};
+	},
+	computed: {
+		...mapGetters(['isLoggedIn']),
 	},
 	methods: {
 		close() {
