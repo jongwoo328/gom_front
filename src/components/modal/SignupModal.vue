@@ -51,6 +51,7 @@
 							id="submitButton"
 							:positive="TRUE"
 							buttonText="가입하기"
+							@click.native="signUp"
 						></Button>
 						<Button @click.native="$emit('close')" buttonText="취소"></Button>
 					</footer>
@@ -63,7 +64,7 @@
 <script>
 import Button from '@/components/common/Button.vue';
 import Input from '@/components/common/Input.vue';
-import { verifyUsername, verifyEmail } from '@/api/account.js';
+import { verifyUsername, verifyEmail, registerUser } from '@/api/account.js';
 
 export default {
 	name: 'SignupModal',
@@ -106,19 +107,20 @@ export default {
 			);
 			if (username === '') {
 				usernameValidationMsg.innerText = '';
-				return;
-			}
-			const { data } = await verifyUsername({
-				username: username,
-			});
-			if (data.valid === true) {
-				usernameValidationMsg.innerText = `${data.username} 은 사용할 수 있습니다.`;
-				usernameValidationMsg.style.color = 'forestgreen';
-				this.usernameFlag = true;
-			} else {
-				usernameValidationMsg.innerText = `${data.username} 은 사용할 수 없습니다.`;
-				usernameValidationMsg.style.color = 'red';
 				this.usernameFlag = false;
+			} else {
+				const { data } = await verifyUsername({
+					username: username,
+				});
+				if (data.valid === true) {
+					usernameValidationMsg.innerText = `${data.username} 은 사용할 수 있습니다.`;
+					usernameValidationMsg.style.color = 'forestgreen';
+					this.usernameFlag = true;
+				} else {
+					usernameValidationMsg.innerText = `${data.username} 은 사용할 수 없습니다.`;
+					usernameValidationMsg.style.color = 'red';
+					this.usernameFlag = false;
+				}
 			}
 			this.checkForm();
 		},
@@ -128,27 +130,30 @@ export default {
 			const emailCheckMsg = document.querySelector('#email-check');
 			if (email === '') {
 				emailValidationMsg.innerText = '';
-			}
-			if (this.isEmail(email)) {
-				emailCheckMsg.innerText = '올바른 형식입니다.';
-				emailCheckMsg.style.color = 'forestgreen';
-				const { data } = await verifyEmail({
-					email: email,
-				});
-				if (data.valid === true) {
-					emailValidationMsg.innerText = `${data.email} 은 사용할 수 있습니다.`;
-					emailValidationMsg.style.color = 'forestgreen';
-					this.emailFlag = true;
+				emailCheckMsg.innerText = '';
+				this.emailFlag = false;
+			} else {
+				if (this.isEmail(email)) {
+					emailCheckMsg.innerText = '올바른 형식입니다.';
+					emailCheckMsg.style.color = 'forestgreen';
+					const { data } = await verifyEmail({
+						email: email,
+					});
+					if (data.valid === true) {
+						emailValidationMsg.innerText = `${data.email} 은 사용할 수 있습니다.`;
+						emailValidationMsg.style.color = 'forestgreen';
+						this.emailFlag = true;
+					} else {
+						emailValidationMsg.innerText = `${data.email} 은 사용할 수 없습니다.`;
+						emailValidationMsg.style.color = 'red';
+						this.emailFlag = false;
+					}
 				} else {
-					emailValidationMsg.innerText = `${data.email} 은 사용할 수 없습니다.`;
-					emailValidationMsg.style.color = 'red';
+					emailCheckMsg.innerText = '올바르지 않은 이메일 형식입니다.';
+					emailCheckMsg.style.color = 'red';
+					emailValidationMsg.innerText = '';
 					this.emailFlag = false;
 				}
-			} else {
-				emailCheckMsg.innerText = '올바르지 않은 이메일 형식입니다.';
-				emailCheckMsg.style.color = 'red';
-				emailValidationMsg.innerText = '';
-				this.emailFlag = false;
 			}
 			this.checkForm();
 		},
@@ -196,6 +201,39 @@ export default {
 				this.emailFlag &&
 				this.password1Flag &&
 				this.password2Flag;
+		},
+		async signUp() {
+			const username = document.querySelector('#username').value;
+			if (username === '') {
+				alert('별명을 확인해주세요.');
+				return;
+			}
+			const email = document.querySelector('#email').value;
+			if (email === '') {
+				alert('이메일을 확인해주세요.');
+				return;
+			}
+			const password1 = document.querySelector('#password1').value;
+			const password2 = document.querySelector('#password2').value;
+			if (password1 === '' || password2 === '') {
+				alert('비밀번호를 확인해주세요.');
+				return;
+			}
+			const res = await registerUser({
+				username: username,
+				email: email,
+				password1: password1,
+				password2: password2,
+			});
+			if (res.status === 201) {
+				console.log(res);
+				this.$store.dispatch('login', res.data);
+				this.$emit('close');
+			} else if (res.status === 400) {
+				alert('이메일, 별명을 다시 확인해주세요.');
+			} else {
+				alert('서버가 요청을 처리할 수 없습니다.');
+			}
 		},
 	},
 };
