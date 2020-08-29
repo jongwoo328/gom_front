@@ -18,10 +18,7 @@
 							<Button @click.native="$emit('close')" buttonText="취소"></Button>
 						</div>
 					</section>
-					<footer>
-						<!-- <Button :positive="TRUE" buttonText="로그인"></Button>
-						<Button @click.native="$emit('close')" buttonText="취소"></Button> -->
-					</footer>
+					<footer></footer>
 				</div>
 			</div>
 		</div>
