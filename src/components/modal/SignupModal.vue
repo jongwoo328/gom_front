@@ -218,21 +218,23 @@ export default {
 				alert('비밀번호를 확인해주세요.');
 				return;
 			}
-			const res = await registerUser({
-				username: username,
-				email: email,
-				password1: password1,
-				password2: password2,
-			});
-			if (res.status === 201) {
+			try {
+				const res = await registerUser({
+					username: username,
+					email: email,
+					password1: password1,
+					password2: password2,
+				});
 				this.$store.dispatch('login', res.data);
 				this.$emit('close');
-			} else if (res.status === 400) {
-				alert('이메일, 별명을 다시 확인해주세요.');
-			} else if (res.status === 500) {
-				alert('서버가 요청을 처리할 수 없습니다.');
-			} else {
-				alert(`오류입니다. (status: ${res.status}) 문의해주세요.`);
+			} catch (error) {
+				if (error.response.status === 400) {
+					alert('이메일, 별명을 다시 확인해주세요.');
+				} else if (error.response.status === 500) {
+					alert('서버가 요청을 처리할 수 없습니다.');
+				} else {
+					alert(`오류입니다. (status: ${error.response.status}) 문의해주세요.`);
+				}
 			}
 		},
 	},
