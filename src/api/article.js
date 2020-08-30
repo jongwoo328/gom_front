@@ -12,4 +12,8 @@ function bookmarkArticle(articleId) {
 	return article.post(`${articleId}/bookmark/`);
 }
 
-export { fetchArticle, createComment, bookmarkArticle };
+function submitArticle(articleData) {
+	return article.post('', articleData);
+}
+
+export { fetchArticle, createComment, submitArticle, bookmarkArticle };

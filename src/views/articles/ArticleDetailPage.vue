@@ -6,9 +6,7 @@
 				<p>{{ articleData.auther }} | {{ articleData.date }}</p>
 				<span class="article-header-underline"></span>
 			</header>
-			<article class="article-body">
-				{{ articleData.content }}
-			</article>
+			<article class="article-body" v-html="articleData.content"></article>
 			<section class="bookmark-box" @click="bookmark">
 				<p>
 					<i v-if="articleData.isBookmark" class="icon ion-md-bookmark"></i

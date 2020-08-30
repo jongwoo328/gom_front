@@ -1,5 +1,8 @@
 <template>
-	<TiptapEditor />
+	<section>
+		<h2>글 작성</h2>
+		<TiptapEditor />
+	</section>
 </template>
 
 <script>
