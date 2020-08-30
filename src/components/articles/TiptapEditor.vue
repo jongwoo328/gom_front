@@ -1,7 +1,6 @@
 <template>
-	<form class="articleform" @submit.prevent="submitArticle">
+	<form class="articleform">
 		<section class="articleform-head">
-			<h2>게시글 생성</h2>
 			<div class="articleform-head__btnbox">
 				<Button
 					type="button"
@@ -10,7 +9,8 @@
 					buttonText="취소"
 				></Button>
 				<Button
-					type="submit"
+					type="button"
+					@click.native="submit"
 					class="articleform-head__submit"
 					buttonText="제출"
 					:positive="true"
@@ -31,6 +31,7 @@
 				<editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
 					<div class="menubar">
 						<button
+							type="button"
 							class="menubar__button"
 							:class="{ 'is-active': isActive.bold() }"
 							@click="commands.bold"
@@ -39,6 +40,7 @@
 						</button>
 
 						<button
+							type="button"
 							class="menubar__button"
 							:class="{ 'is-active': isActive.italic() }"
 							@click="commands.italic"
@@ -47,6 +49,7 @@
 						</button>
 
 						<button
+							type="button"
 							class="menubar__button"
 							:class="{ 'is-active': isActive.strike() }"
 							@click="commands.strike"
@@ -55,6 +58,7 @@
 						</button>
 
 						<button
+							type="button"
 							class="menubar__button"
 							:class="{ 'is-active': isActive.underline() }"
 							@click="commands.underline"
@@ -63,6 +67,7 @@
 						</button>
 
 						<button
+							type="button"
 							class="menubar__button"
 							:class="{ 'is-active': isActive.code() }"
 							@click="commands.code"
@@ -71,6 +76,7 @@
 						</button>
 
 						<button
+							type="button"
 							class="menubar__button"
 							:class="{ 'is-active': isActive.paragraph() }"
 							@click="commands.paragraph"
@@ -79,6 +85,7 @@
 						</button>
 
 						<button
+							type="button"
 							class="menubar__button"
 							:class="{ 'is-active': isActive.heading({ level: 1 }) }"
 							@click="commands.heading({ level: 1 })"
@@ -87,6 +94,7 @@
 						</button>
 
 						<button
+							type="button"
 							class="menubar__button"
 							:class="{ 'is-active': isActive.heading({ level: 2 }) }"
 							@click="commands.heading({ level: 2 })"
@@ -95,6 +103,7 @@
 						</button>
 
 						<button
+							type="button"
 							class="menubar__button"
 							:class="{ 'is-active': isActive.heading({ level: 3 }) }"
 							@click="commands.heading({ level: 3 })"
@@ -103,6 +112,7 @@
 						</button>
 
 						<button
+							type="button"
 							class="menubar__button"
 							:class="{ 'is-active': isActive.bullet_list() }"
 							@click="commands.bullet_list"
@@ -111,6 +121,7 @@
 						</button>
 
 						<button
+							type="button"
 							class="menubar__button"
 							:class="{ 'is-active': isActive.ordered_list() }"
 							@click="commands.ordered_list"
@@ -119,6 +130,7 @@
 						</button>
 
 						<button
+							type="button"
 							class="menubar__button"
 							:class="{ 'is-active': isActive.blockquote() }"
 							@click="commands.blockquote"
@@ -127,6 +139,7 @@
 						</button>
 
 						<button
+							type="button"
 							class="menubar__button"
 							:class="{ 'is-active': isActive.code_block() }"
 							@click="commands.code_block"
@@ -134,21 +147,34 @@
 							<img class="icon" src="@/assets/images/icons/code.svg" />
 						</button>
 						<button
+							type="button"
 							class="menubar__button"
 							@click="showImagePrompt(commands.image)"
 						>
 							<img class="icon" src="@/assets/images/icons/image.svg" />
 						</button>
 
-						<button class="menubar__button" @click="commands.horizontal_rule">
+						<button
+							type="button"
+							class="menubar__button"
+							@click="commands.horizontal_rule"
+						>
 							<img class="icon" src="@/assets/images/icons/hr.svg" />
 						</button>
 
-						<button class="menubar__button" @click="commands.undo">
+						<button
+							type="button"
+							class="menubar__button"
+							@click="commands.undo"
+						>
 							<img class="icon" src="@/assets/images/icons/undo.svg" />
 						</button>
 
-						<button class="menubar__button" @click="commands.redo">
+						<button
+							type="button"
+							class="menubar__button"
+							@click="commands.redo"
+						>
 							<img class="icon" src="@/assets/images/icons/redo.svg" />
 						</button>
 					</div>
@@ -183,6 +209,7 @@ import {
 	Image,
 } from 'tiptap-extensions';
 import Button from '@/components/common/Button.vue';
+import { submitArticle } from '@/api/article.js';
 
 export default {
 	components: {
@@ -193,7 +220,7 @@ export default {
 	data() {
 		return {
 			editor: null,
-			title: null,
+			title: '',
 		};
 	},
 	mounted() {
@@ -228,10 +255,36 @@ export default {
 				command({ src });
 			}
 		},
-		async submitArticle() {
-			const article = { title: this.title, content: this.editor.getHTML() };
-			// console.log(this.editor.getHTML());
-			console.log(article);
+		async submit() {
+			try {
+				const res = await submitArticle({
+					title: this.title,
+					content: this.editor.getHTML(),
+				});
+				if (res.status === 201) {
+					alert('작성완료');
+					this.$router.push({
+						name: 'ArticleDetail',
+						params: {
+							ariticleId: res.data.id,
+						},
+					});
+				}
+			} catch (error) {
+				if (error.response) {
+					if (error.response.status === 400) {
+						alert('로그인 정보를 확인해주세요.');
+					} else if (error.response.status === 500) {
+						alert('서버가 요청을 처리할 수 없습니다.');
+					} else {
+						alert(
+							`오류입니다. (status: ${error.response.status}) 문의해주세요.`,
+						);
+					}
+				} else {
+					alert(error);
+				}
+			}
 		},
 	},
 	beforeDestroy() {
@@ -319,7 +372,7 @@ symbol {
 }
 .articleform-head {
 	display: flex;
-	justify-content: space-between;
+	justify-content: flex-end;
 	align-items: center;
 	margin-bottom: 0.5rem;
 	h2 {
