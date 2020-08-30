@@ -23,4 +23,7 @@ export default {
 .container {
 	margin-top: 2rem;
 }
+main {
+	padding-bottom: 2rem;
+}
 </style>
