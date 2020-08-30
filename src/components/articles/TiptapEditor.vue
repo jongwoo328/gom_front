@@ -234,7 +234,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import '~@/assets/sass/main.scss';
 .icon {
 	position: relative;
 	display: inline-block;
@@ -293,6 +292,7 @@ symbol {
 	}
 }
 .editor {
+	@import '~@/assets/sass/main.scss';
 	margin: 0;
 	width: 100%;
 	max-width: 100%;
@@ -302,9 +302,6 @@ symbol {
 		width: 100%;
 		height: 400px;
 		overflow-y: scroll;
-	}
-	p {
-		margin: 0;
 	}
 }
 
