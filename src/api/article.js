@@ -4,4 +4,7 @@ function fetchArticle(articleId) {
 	return article.get(`${articleId}/`);
 }
 
-export { fetchArticle };
+function createComment(articleId, commentData) {
+	return article.post(`${articleId}/comment/`, commentData);
+}
+export { fetchArticle, createComment };
