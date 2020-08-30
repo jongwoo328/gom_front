@@ -28,8 +28,8 @@
 		</table>
 		<sliding-pagination
 			class="silding-bar"
-			:current="paginationData.currentPage"
-			:total="paginationData.totalPages"
+			:current="currentPage"
+			:total="totalPages"
 			@page-change="pageChangeHandler"
 		></sliding-pagination>
 	</div>
@@ -44,10 +44,8 @@ export default {
 	data() {
 		return {
 			articles: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-			paginationData: {
-				currentPage: 1,
-				totalPages: 10,
-			},
+			currentPage: 1,
+			totalPages: 10,
 		};
 	},
 	methods: {
@@ -108,6 +106,12 @@ export default {
 			width: 1.5rem;
 			text-align: center;
 		}
+	}
+}
+.c-sliding-pagination__list-element--active {
+	background-color: $green;
+	a {
+		color: white;
 	}
 }
 </style>
