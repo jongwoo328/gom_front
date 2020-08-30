@@ -3,7 +3,7 @@
 		<section class="aritcle-container">
 			<header class="article-header">
 				<h1>{{ articleData.title }}</h1>
-				<p>{{ articleData.auther }} | {{ articleData.data }}</p>
+				<p>{{ articleData.auther }} | {{ articleData.date }}</p>
 				<span class="article-header-underline"></span>
 			</header>
 			<article class="article-body">
@@ -11,13 +11,14 @@
 			</article>
 			<section class="bookmark-box">
 				<p><i class="icon ion-md-bookmark"></i></p>
-				<p>23</p>
+				<p>{{ articleData.bookmarkCnt }}</p>
 			</section>
 		</section>
-		<div class="comment-container">
-			<span class="comment-cnt"><span></span> 댓글 15개</span>
-
-			<div class="comment-box">
+		<section class="comment-container">
+			<span class="comment-cnt"
+				><span></span> 댓글 {{ commentData.commentCnt }}개</span
+			>
+			<article class="comment-box">
 				<p>
 					황영준 20.08.08 14:14
 				</p>
@@ -25,30 +26,39 @@
 					댓글 내용 레전드 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ엌ㅋㅋㅋㅋ뤀ㅋㅋ
 				</p>
 				<span></span>
-			</div>
-			<div class="comment-box">
-				<p><i class="icon ion-ios-return-right"></i> 황영준 20.08.08 14:14</p>
-				<p>
-					댓글 내용 레전드 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ엌ㅋㅋㅋㅋ뤀ㅋㅋ
-				</p>
-				<span></span>
-			</div>
-		</div>
+			</article>
+			<form class="comment-form">
+				<input
+					class="comment-input"
+					type="text"
+					v-model="commentData.commentInput"
+				/>
+			</form>
+		</section>
 	</section>
 </template>
 
 <script>
-import { fetchArticle } from '@/api/article.js';
+import { fetchArticle } from '@/api/article';
+import { customDate } from '@/util/date';
+import { mapGetters } from 'vuex';
 export default {
+	...mapGetters(['getUserData']),
 	data() {
 		return {
 			articleData: {
 				title: null,
+				content: null,
 				auther: null,
 				date: null,
-				content: null,
+				bookmarkCnt: null,
 			},
-			comment: [],
+			commentData: {
+				commentArray: [],
+				commentCnt: null,
+				commentInput: '',
+			},
+			user: this.getUserDate(),
 		};
 	},
 	props: {
@@ -56,11 +66,17 @@ export default {
 	},
 	methods: {
 		async fetchData() {
-			const { data } = await fetchArticle(2);
-			this.articleData.title = data.title;
-			this.articleData.auther = data.user.username;
-			this.content = data.content;
-			console.log();
+			try {
+				const { data } = await fetchArticle(1);
+				console.log(data);
+				this.articleData.title = data.title;
+				this.articleData.content = data.content;
+				this.articleData.auther = data.user.username;
+				this.articleData.bookmarkCnt = data.liked_user.length;
+				this.articleData.date = customDate(data.created_at);
+			} catch (error) {
+				console.log(error);
+			}
 		},
 	},
 	created() {
@@ -121,6 +137,12 @@ export default {
 			width: 100%;
 			height: 1px;
 			background: $gray;
+		}
+	}
+	.comment-form {
+		.comment-input {
+			width: 80%;
+			border-bottom: 2px solid black;
 		}
 	}
 }

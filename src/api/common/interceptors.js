@@ -6,7 +6,8 @@ function setInterceptors(instance) {
 	instance.interceptors.request.use(
 		function(config) {
 			config.headers.Authorization =
-				store.getters.getToken || cookies.get('auth-token');
+				`Bearer ${store.getters.getToken}` ||
+				`Bearer ${cookies.get('auth-token')}`;
 			return config;
 		},
 		function(error) {
