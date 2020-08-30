@@ -9,13 +9,14 @@ function create(url, options) {
 function createWithAuth(url, options) {
 	const instance = axios.create(Object.assign({ baseURL: url }, options));
 	setInterceptors(instance);
+	console.log(url);
 	return instance;
 }
 
-export const noAuth = create(`${process.env.VUE_APP_API_URL}`);
-export const auth = createWithAuth(`${process.env.VUE_APP_API_URL}`);
+export const noAuth = create(`${process.env.VUE_APP_API_URL}/`);
+export const auth = createWithAuth(`${process.env.VUE_APP_API_URL}/`);
 export const article = createWithAuth(
-	`${process.env.VUE_APP_API_URL}articles/`,
+	`${process.env.VUE_APP_API_URL}/articles/`,
 );
 // export const study = createWithAuth(`${process.env.VUE_APP_API_URL}study/`);
 // export const baseAuth = createWithAuth(`${process.env.VUE_APP_API_URL}`);

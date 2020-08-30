@@ -18,10 +18,6 @@ const routes = [
 		name: 'ArticleCreate',
 		component: () => import('@/views/articles/CreateArticlePage.vue'),
 	},
-	{
-		path: '/:ariticleId',
-		component: () => import('@/views/articles/ArticleDetailPage.vue'),
-	},
 ];
 
 const router = new VueRouter({
