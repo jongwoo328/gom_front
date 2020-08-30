@@ -96,7 +96,7 @@ export default {
 				this.articleData.title = data.title;
 				this.articleData.content = data.content;
 				this.articleData.auther = data.user.username;
-				this.articleData.bookmarkCnt = data.liked_user.length;
+				this.articleData.bookmarkCnt = data.user.bookmarked_articles.length;
 				this.articleData.date = customDate(data.created_at);
 				// comment
 				this.commentData.commentsArray = data.comments;
@@ -179,6 +179,12 @@ export default {
 		flex-direction: column;
 		.comment-box {
 			display: flex;
+			.comment-content {
+				margin-left: 1rem;
+			}
+			i {
+				margin-right: 0.5rem;
+			}
 		}
 		.childcomment-wrap {
 			border-top: 0.5px solid $green;
@@ -191,10 +197,7 @@ export default {
 	}
 	.comment-form {
 		display: flex;
-		.comment-content {
-			margin: 0 !important;
-			margin-left: 1rem;
-		}
+
 		.comment-input {
 			width: 80%;
 			margin-left: 1rem;
