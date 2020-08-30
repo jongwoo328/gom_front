@@ -3,7 +3,7 @@
 		<div class="white"></div>
 		<div class="yellow"></div>
 		<div class="green">
-			<router-link :to="{ name: 'Home' }">
+			<router-link :to="{ name: 'articles' }">
 				<h1 id="title">곰 보드</h1>
 			</router-link>
 			<nav>
@@ -14,7 +14,7 @@
 					<li v-if="!this.isLoggedIn" @click="showLogin">
 						로그인
 					</li>
-					<li v-if="this.isLoggedIn" @click="$store.dispatch('logout')">
+					<li v-if="this.isLoggedIn" @click="logout">
 						로그아웃
 					</li>
 				</ul>
@@ -28,7 +28,7 @@
 <script>
 import SignupModal from '@/components/modal/SignupModal.vue';
 import LoginModal from '@/components/modal/LoginModal.vue';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
 	name: 'Header',
@@ -46,6 +46,7 @@ export default {
 		...mapGetters(['isLoggedIn']),
 	},
 	methods: {
+		...mapActions(['logout']),
 		close() {
 			this.showLoginModal = false;
 			this.showSignupModal = false;

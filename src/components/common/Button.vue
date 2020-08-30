@@ -28,7 +28,13 @@ export default {
 	border: 1px solid $green;
 	margin: 0 5px 0 5px;
 	padding: 0 5px 0 5px;
+	transition: all 0.2s linear;
 
+	&:hover {
+		background-color: black;
+		color: white;
+		border: 1px solid black;
+	}
 	&:disabled {
 		opacity: 0.5;
 		&:hover {
