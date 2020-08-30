@@ -49,20 +49,23 @@
 
 				<span></span>
 			</article>
-			<form class="comment-form">
+			<form class="comment-form" @submit.prevent="submitComment">
 				<p>{{ getUserData.username }}</p>
 				<input
 					class="comment-input"
 					type="text"
 					v-model="commentData.commentInput"
 				/>
+				<button :disabled="!isVaildComment" class="comment-submit__button">
+					작성
+				</button>
 			</form>
 		</section>
 	</section>
 </template>
 
 <script>
-import { fetchArticle } from '@/api/article';
+import { fetchArticle, createComment } from '@/api/article';
 import { customDate } from '@/util/date';
 import { mapGetters } from 'vuex';
 export default {
@@ -80,7 +83,6 @@ export default {
 				commentCnt: null,
 				commentInput: '',
 			},
-			// userName: this.getUserData,
 		};
 	},
 	props: {
@@ -103,9 +105,23 @@ export default {
 				console.log(error);
 			}
 		},
+		async submitComment() {
+			try {
+				const commentData = {
+					content: this.commentData.commentInput,
+				};
+				await createComment(1, commentData);
+				this.fetchData();
+			} catch (error) {
+				console.log(error);
+			}
+		},
 	},
 	computed: {
 		...mapGetters(['getUserData']),
+		isVaildComment() {
+			return this.commentData.commentInput ? true : false;
+		},
 	},
 	created() {
 		this.fetchData();
@@ -174,13 +190,22 @@ export default {
 		}
 	}
 	.comment-form {
+		display: flex;
 		.comment-content {
 			margin: 0 !important;
 			margin-left: 1rem;
 		}
 		.comment-input {
 			width: 80%;
+			margin-left: 1rem;
+			padding: 0.5rem;
 			border-bottom: 2px solid black;
+		}
+		.comment-submit__button {
+			width: 50px;
+			height: 30px;
+			background: $green;
+			color: white;
 		}
 	}
 }
