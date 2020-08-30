@@ -19,16 +19,34 @@
 				><span></span> 댓글 {{ commentData.commentCnt }}개</span
 			>
 			<article
-				class="comment-box"
+				class="comment-wrap"
 				:key="comment.id"
 				v-for="comment in commentData.commentsArray"
 			>
-				<p class="comment-username">
-					{{ comment.user.username }}
-				</p>
-				<p class="comment-content">
-					{{ comment.content }}
-				</p>
+				<div class="comment-box">
+					<p class="comment-username">
+						{{ comment.user.username }}
+					</p>
+					<p class="comment-content">
+						{{ comment.content }}
+					</p>
+				</div>
+				<div
+					class="childcomment-wrap"
+					:key="childcomment.id"
+					v-for="childcomment in comment.child_comments"
+				>
+					<div class="comment-box">
+						<i class="icon ion-md-return-right"></i>
+						<p class="comment-username">
+							{{ comment.user.username }}
+						</p>
+						<p class="comment-content">
+							{{ comment.content }}
+						</p>
+					</div>
+				</div>
+
 				<span></span>
 			</article>
 			<form class="comment-form">
@@ -140,9 +158,15 @@ export default {
 			background: $yellow;
 		}
 	}
-	.comment-box {
+	.comment-wrap {
 		display: flex;
 		flex-direction: column;
+		.comment-box {
+			display: flex;
+		}
+		.childcomment-wrap {
+			border-top: 0.5px solid $green;
+		}
 		span {
 			width: 100%;
 			height: 1px;
@@ -152,6 +176,7 @@ export default {
 	.comment-form {
 		.comment-content {
 			margin: 0 !important;
+			margin-left: 1rem;
 		}
 		.comment-input {
 			width: 80%;
