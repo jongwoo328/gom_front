@@ -7,8 +7,11 @@
 				<span class="article-header-underline"></span>
 			</header>
 			<article class="article-body" v-html="articleData.content"></article>
-			<section class="bookmark-box">
-				<p><i class="icon ion-md-bookmark"></i></p>
+			<section class="bookmark-box" @click="bookmark">
+				<p>
+					<i v-if="articleData.isBookmark" class="icon ion-md-bookmark"></i
+					><i v-else class="icon ion-md-bookmark bookmark-black"></i>
+				</p>
 				<p>{{ articleData.bookmarkCnt }}</p>
 			</section>
 		</section>
@@ -63,7 +66,7 @@
 </template>
 
 <script>
-import { fetchArticle, createComment } from '@/api/article';
+import { fetchArticle, createComment, bookmarkArticle } from '@/api/article';
 import { customDate } from '@/util/date';
 import { mapGetters } from 'vuex';
 export default {
@@ -75,6 +78,7 @@ export default {
 				auther: null,
 				date: null,
 				bookmarkCnt: null,
+				isBookmark: null,
 			},
 			commentData: {
 				commentsArray: [],
@@ -91,14 +95,26 @@ export default {
 			try {
 				const { data } = await fetchArticle(1);
 				console.log(data);
-				this.articleData.title = data.title;
-				this.articleData.content = data.content;
-				this.articleData.auther = data.user.username;
-				this.articleData.bookmarkCnt = data.liked_user.length;
-				this.articleData.date = customDate(data.created_at);
+				this.articleData.title = data.data.title;
+				this.articleData.content = data.data.content;
+				this.articleData.auther = data.data.user.username;
+				this.articleData.bookmarkCnt =
+					data.data.user.bookmarked_articles.length;
+				this.articleData.date = customDate(data.data.created_at);
 				// comment
-				this.commentData.commentsArray = data.comments;
-				this.commentData.commentCnt = data.comments.length;
+				this.commentData.commentsArray = data.data.comments;
+				this.commentData.commentCnt = data.data.comments.length;
+				this.articleData.bookmarkCnt = data.bookmark_count;
+				this.articleData.isBookmark = data.is_bookmarked;
+			} catch (error) {
+				console.log(error);
+			}
+		},
+		async bookmark() {
+			try {
+				const { data } = await bookmarkArticle(1);
+				this.articleData.isBookmark = !this.articleData.isBookmark;
+				this.articleData.bookmarkCnt += data;
 			} catch (error) {
 				console.log(error);
 			}
@@ -157,6 +173,9 @@ export default {
 			margin-right: 0.5rem;
 			color: $yellow;
 		}
+		.bookmark-black {
+			color: gray;
+		}
 	}
 }
 .comment-container {
@@ -177,6 +196,12 @@ export default {
 		flex-direction: column;
 		.comment-box {
 			display: flex;
+			.comment-content {
+				margin-left: 1rem;
+			}
+			i {
+				margin-right: 0.5rem;
+			}
 		}
 		.childcomment-wrap {
 			border-top: 0.5px solid $green;
@@ -189,10 +214,7 @@ export default {
 	}
 	.comment-form {
 		display: flex;
-		.comment-content {
-			margin: 0 !important;
-			margin-left: 1rem;
-		}
+
 		.comment-input {
 			width: 80%;
 			margin-left: 1rem;
