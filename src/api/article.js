@@ -7,4 +7,9 @@ function fetchArticle(articleId) {
 function createComment(articleId, commentData) {
 	return article.post(`${articleId}/comment/`, commentData);
 }
-export { fetchArticle, createComment };
+
+function submitArticle(articleData) {
+	return article.post('', articleData);
+}
+
+export { fetchArticle, createComment, submitArticle };
