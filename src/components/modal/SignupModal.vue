@@ -49,7 +49,7 @@
 					<footer>
 						<Button
 							id="submitButton"
-							:positive="TRUE"
+							:positive="true"
 							buttonText="가입하기"
 							@click.native="signUp"
 						></Button>
@@ -74,7 +74,6 @@ export default {
 	},
 	data() {
 		return {
-			TRUE: true,
 			emailMaxLength: 30,
 			passwordMaxLength: 30,
 			passwordMinLength: 8,
@@ -230,8 +229,10 @@ export default {
 				this.$emit('close');
 			} else if (res.status === 400) {
 				alert('이메일, 별명을 다시 확인해주세요.');
-			} else {
+			} else if (res.status === 500) {
 				alert('서버가 요청을 처리할 수 없습니다.');
+			} else {
+				alert(`오류입니다. (status: ${res.status}) 문의해주세요.`);
 			}
 		},
 	},
