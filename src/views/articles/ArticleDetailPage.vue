@@ -2,45 +2,113 @@
 	<section class="container">
 		<section class="aritcle-container">
 			<header class="article-header">
-				<h1>가나다라마바사</h1>
-				<p>황영준 | 2018.08.08 15:15 | 조회 20</p>
+				<h1>{{ articleData.title }}</h1>
+				<p>{{ articleData.auther }} | {{ articleData.date }}</p>
 				<span class="article-header-underline"></span>
 			</header>
 			<article class="article-body">
-				컨텐트지롱 ㅎㅎ
+				{{ articleData.content }}
 			</article>
 			<section class="bookmark-box">
 				<p><i class="icon ion-md-bookmark"></i></p>
-				<p>23</p>
+				<p>{{ articleData.bookmarkCnt }}</p>
 			</section>
 		</section>
-		<div class="comment-container">
-			<span class="comment-cnt"><span></span> 댓글 15개</span>
+		<section class="comment-container">
+			<span class="comment-cnt"
+				><span></span> 댓글 {{ commentData.commentCnt }}개</span
+			>
+			<article
+				class="comment-wrap"
+				:key="comment.id"
+				v-for="comment in commentData.commentsArray"
+			>
+				<div class="comment-box">
+					<p class="comment-username">
+						{{ comment.user.username }}
+					</p>
+					<p class="comment-content">
+						{{ comment.content }}
+					</p>
+				</div>
+				<div
+					class="childcomment-wrap"
+					:key="childcomment.id"
+					v-for="childcomment in comment.child_comments"
+				>
+					<div class="comment-box">
+						<i class="icon ion-md-return-right"></i>
+						<p class="comment-username">
+							{{ comment.user.username }}
+						</p>
+						<p class="comment-content">
+							{{ comment.content }}
+						</p>
+					</div>
+				</div>
 
-			<div class="comment-box">
-				<p>
-					황영준 20.08.08 14:14
-				</p>
-				<p>
-					댓글 내용 레전드 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ엌ㅋㅋㅋㅋ뤀ㅋㅋ
-				</p>
 				<span></span>
-			</div>
-			<div class="comment-box">
-				<p><i class="icon ion-ios-return-right"></i> 황영준 20.08.08 14:14</p>
-				<p>
-					댓글 내용 레전드 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ엌ㅋㅋㅋㅋ뤀ㅋㅋ
-				</p>
-				<span></span>
-			</div>
-		</div>
+			</article>
+			<form class="comment-form">
+				<p>{{ getUserData.username }}</p>
+				<input
+					class="comment-input"
+					type="text"
+					v-model="commentData.commentInput"
+				/>
+			</form>
+		</section>
 	</section>
 </template>
 
 <script>
+import { fetchArticle } from '@/api/article';
+import { customDate } from '@/util/date';
+import { mapGetters } from 'vuex';
 export default {
+	data() {
+		return {
+			articleData: {
+				title: null,
+				content: null,
+				auther: null,
+				date: null,
+				bookmarkCnt: null,
+			},
+			commentData: {
+				commentsArray: [],
+				commentCnt: null,
+				commentInput: '',
+			},
+			// userName: this.getUserData,
+		};
+	},
 	props: {
-		article: Object,
+		articleId: Number,
+	},
+	methods: {
+		async fetchData() {
+			try {
+				const { data } = await fetchArticle(1);
+				console.log(data);
+				this.articleData.title = data.title;
+				this.articleData.content = data.content;
+				this.articleData.auther = data.user.username;
+				this.articleData.bookmarkCnt = data.liked_user.length;
+				this.articleData.date = customDate(data.created_at);
+				// comment
+				this.commentData.commentsArray = data.comments;
+				this.commentData.commentCnt = data.comments.length;
+			} catch (error) {
+				console.log(error);
+			}
+		},
+	},
+	computed: {
+		...mapGetters(['getUserData']),
+	},
+	created() {
+		this.fetchData();
 	},
 };
 </script>
@@ -90,13 +158,29 @@ export default {
 			background: $yellow;
 		}
 	}
-	.comment-box {
+	.comment-wrap {
 		display: flex;
 		flex-direction: column;
+		.comment-box {
+			display: flex;
+		}
+		.childcomment-wrap {
+			border-top: 0.5px solid $green;
+		}
 		span {
 			width: 100%;
 			height: 1px;
 			background: $gray;
+		}
+	}
+	.comment-form {
+		.comment-content {
+			margin: 0 !important;
+			margin-left: 1rem;
+		}
+		.comment-input {
+			width: 80%;
+			border-bottom: 2px solid black;
 		}
 	}
 }

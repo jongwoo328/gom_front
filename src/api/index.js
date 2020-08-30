@@ -1,5 +1,5 @@
 import axios from 'axios';
-// import { setInterceptors } from './common/interceptors';
+import { setInterceptors } from './common/interceptors';
 
 function create(url, options) {
 	const instance = axios.create(Object.assign({ baseURL: url }, options));
@@ -8,12 +8,15 @@ function create(url, options) {
 
 function createWithAuth(url, options) {
 	const instance = axios.create(Object.assign({ baseURL: url }, options));
-	// setInterceptors(instance);
+	setInterceptors(instance);
 	return instance;
 }
 
-export const noAuth = create(`${process.env.VUE_APP_API_URL}/`);
-export const auth = createWithAuth(`${process.env.VUE_APP_API_URL}/`);
+export const noAuth = create(`${process.env.VUE_APP_API_URL}`);
+export const auth = createWithAuth(`${process.env.VUE_APP_API_URL}`);
+export const article = createWithAuth(
+	`${process.env.VUE_APP_API_URL}articles/`,
+);
 // export const study = createWithAuth(`${process.env.VUE_APP_API_URL}study/`);
 // export const baseAuth = createWithAuth(`${process.env.VUE_APP_API_URL}`);
 // export const alarm = createWithAuth(`${process.env.VUE_APP_API_URL}`);
