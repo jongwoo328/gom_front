@@ -234,6 +234,7 @@ export default {
 </script>
 
 <style lang="scss">
+@import '~@/assets/sass/main.scss';
 .icon {
 	position: relative;
 	display: inline-block;
