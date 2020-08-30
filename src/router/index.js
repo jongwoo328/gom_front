@@ -10,13 +10,13 @@ const routes = [
 		component: () => import('@/views/articles/ArticlePage.vue'),
 	},
 	{
-		path: '/:ariticleId',
-		component: () => import('@/views/articles/ArticleDetailPage.vue'),
-	},
-	{
 		path: '/create',
 		name: 'ArticleCreate',
 		component: () => import('@/views/articles/CreateArticlePage.vue'),
+	},
+	{
+		path: '/:ariticleId',
+		component: () => import('@/views/articles/ArticleDetailPage.vue'),
 	},
 ];
 
