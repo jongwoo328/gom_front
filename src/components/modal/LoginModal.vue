@@ -8,13 +8,17 @@
 					</header>
 					<section>
 						<div class="input-wrapper">
-							<label for="">이메일</label>
-							<Input />
-							<label for="">비밀번호</label>
-							<Input />
+							<label for="email">이메일</label>
+							<Input id="login-email" />
+							<label for="password">비밀번호</label>
+							<Input type="password" id="login-password" />
 						</div>
 						<div class="button-wrapper">
-							<Button :positive="TRUE" buttonText="로그인"></Button>
+							<Button
+								@click.native="userLogin"
+								:positive="true"
+								buttonText="로그인"
+							></Button>
 							<Button @click.native="$emit('close')" buttonText="취소"></Button>
 						</div>
 					</section>
@@ -28,6 +32,7 @@
 <script>
 import Button from '@/components/common/Button.vue';
 import Input from '@/components/common/Input.vue';
+import { login } from '@/api/account.js';
 
 export default {
 	name: 'Login',
@@ -35,10 +40,25 @@ export default {
 		Button,
 		Input,
 	},
-	data() {
-		return {
-			TRUE: true,
-		};
+	methods: {
+		async userLogin() {
+			const email = document.querySelector('#login-email').value;
+			const password = document.querySelector('#login-password').value;
+			const res = await login({
+				email: email,
+				password: password,
+			});
+			if (res.status === 200) {
+				this.$store.dispatch('login', res.data);
+				this.$emit('close');
+			} else if (res.status === 400) {
+				alert('로그인 정보를 확인해주세요.');
+			} else if (res.status === 500) {
+				alert('서버가 요청을 처리할 수 없습니다.');
+			} else {
+				alert(`오류입니다. (status: ${res.status}) 문의해주세요.`);
+			}
+		},
 	},
 };
 </script>

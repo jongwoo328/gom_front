@@ -40,12 +40,14 @@ export default new Vuex.Store({
 			cookies.set('userData', data.user);
 			commit('setToken', data.token);
 			commit('setUserData', data.user);
+			alert('로그인 성공');
 		},
 		logout({ commit }) {
 			cookies.remove('auth-token');
 			cookies.remove('userData');
 			commit('removeToken');
 			commit('removeUserData');
+			alert('로그아웃 성공');
 		},
 	},
 	modules: {},
