@@ -18,16 +18,21 @@
 			<span class="comment-cnt"
 				><span></span> 댓글 {{ commentData.commentCnt }}개</span
 			>
-			<article class="comment-box">
-				<p>
-					황영준 20.08.08 14:14
+			<article
+				class="comment-box"
+				:key="comment.id"
+				v-for="comment in commentData.commentsArray"
+			>
+				<p class="comment-username">
+					{{ comment.user.username }}
 				</p>
-				<p>
-					댓글 내용 레전드 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ엌ㅋㅋㅋㅋ뤀ㅋㅋ
+				<p class="comment-content">
+					{{ comment.content }}
 				</p>
 				<span></span>
 			</article>
 			<form class="comment-form">
+				<p>{{ getUserData.username }}</p>
 				<input
 					class="comment-input"
 					type="text"
@@ -43,7 +48,6 @@ import { fetchArticle } from '@/api/article';
 import { customDate } from '@/util/date';
 import { mapGetters } from 'vuex';
 export default {
-	...mapGetters(['getUserData']),
 	data() {
 		return {
 			articleData: {
@@ -54,11 +58,11 @@ export default {
 				bookmarkCnt: null,
 			},
 			commentData: {
-				commentArray: [],
+				commentsArray: [],
 				commentCnt: null,
 				commentInput: '',
 			},
-			user: this.getUserDate(),
+			// userName: this.getUserData,
 		};
 	},
 	props: {
@@ -74,10 +78,16 @@ export default {
 				this.articleData.auther = data.user.username;
 				this.articleData.bookmarkCnt = data.liked_user.length;
 				this.articleData.date = customDate(data.created_at);
+				// comment
+				this.commentData.commentsArray = data.comments;
+				this.commentData.commentCnt = data.comments.length;
 			} catch (error) {
 				console.log(error);
 			}
 		},
+	},
+	computed: {
+		...mapGetters(['getUserData']),
 	},
 	created() {
 		this.fetchData();
@@ -140,6 +150,9 @@ export default {
 		}
 	}
 	.comment-form {
+		.comment-content {
+			margin: 0 !important;
+		}
 		.comment-input {
 			width: 80%;
 			border-bottom: 2px solid black;

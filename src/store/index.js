@@ -17,33 +17,37 @@ export default new Vuex.Store({
 			return state.userData;
 		},
 		isLoggedIn(state) {
-			return Boolean(state.token);
+			return !!state.token;
 		},
 	},
 	mutations: {
 		setToken(state, token) {
-			cookies.set('auth-token', token);
-			return state;
+			state.token = token;
 		},
 		setUserData(state, userData) {
-			cookies.set('userData', userData);
-			return state;
+			state.userData = userData;
 		},
-		removeToken() {
-			cookies.remove('auth-token');
+		removeToken(state) {
+			state.token = null;
 		},
-		removeUserData() {
-			cookies.remove('userData');
+		removeUserData(state) {
+			state.token = null;
 		},
 	},
 	actions: {
 		login({ commit }, data) {
+			cookies.set('auth-token', data.token);
+			cookies.set('userData', data.user);
 			commit('setToken', data.token);
 			commit('setUserData', data.user);
+			alert('로그인 성공');
 		},
 		logout({ commit }) {
+			cookies.remove('auth-token');
+			cookies.remove('userData');
 			commit('removeToken');
 			commit('removeUserData');
+			alert('로그아웃 성공');
 		},
 	},
 	modules: {},
