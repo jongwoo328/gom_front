@@ -27,7 +27,7 @@ export default {
 	min-height: 30px;
 	border: 1px solid $green;
 	margin: 0 5px 0 5px;
-	padding: 0 5px 0 5px;
+	padding: 0 10px 0 10px;
 	transition: all 0.2s linear;
 
 	&:hover {
@@ -45,5 +45,10 @@ export default {
 .positive {
 	background-color: $green;
 	color: white;
+	&:hover {
+		background-color: white;
+		color: $green;
+		border: 1px solid $green;
+	}
 }
 </style>

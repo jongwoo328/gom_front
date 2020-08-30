@@ -3,14 +3,18 @@
 		<section class="articleform-head">
 			<h2>게시글 생성</h2>
 			<div class="articleform-head__btnbox">
-				<button
+				<Button
 					type="button"
 					class="articleform-head__cancle"
-					@click="$router.go(-1)"
-				>
-					취소
-				</button>
-				<button type="submit" class="articleform-head__submit">제출</button>
+					@click.native="$router.go(-1)"
+					buttonText="취소"
+				></Button>
+				<Button
+					type="submit"
+					class="articleform-head__submit"
+					buttonText="제출"
+					:positive="true"
+				></Button>
 			</div>
 		</section>
 		<section class="articleform-wrap">
@@ -178,10 +182,13 @@ import {
 	History,
 	Image,
 } from 'tiptap-extensions';
+import Button from '@/components/common/Button.vue';
+
 export default {
 	components: {
 		EditorContent,
 		EditorMenuBar,
+		Button,
 	},
 	data() {
 		return {
@@ -289,6 +296,8 @@ symbol {
 	.articleform-title__input {
 		width: 100%;
 		border-bottom: 1px solid black;
+		margin-bottom: 30px;
+		height: 30px;
 	}
 }
 .editor {
@@ -315,34 +324,6 @@ symbol {
 	margin-bottom: 0.5rem;
 	h2 {
 		margin-bottom: 0;
-	}
-	&__btnbox {
-		.articleform-head__cancle {
-			width: 50px;
-			padding: 0.25rem;
-			margin-right: 0.25rem;
-			background: white;
-			border: 1px solid black;
-			&:hover {
-				transition: all 0.25s ease;
-				background: black;
-				color: white;
-			}
-		}
-		.articleform-head__submit {
-			width: 50px;
-			padding: 0.25rem;
-			margin-right: 0.25rem;
-			background: $green;
-			color: white;
-			/* outline: none; */
-			border: 1px solid black;
-			&:hover {
-				transition: all 0.25s ease;
-				background: white;
-				color: black;
-			}
-		}
 	}
 }
 </style>

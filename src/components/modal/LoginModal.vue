@@ -7,13 +7,13 @@
 						<h2>로그인</h2>
 					</header>
 					<section>
-						<div class="input-wrapper">
+						<div class="modal-input__wrapper">
 							<label for="email">이메일</label>
 							<Input id="login-email" />
 							<label for="password">비밀번호</label>
 							<Input type="password" id="login-password" />
 						</div>
-						<div class="button-wrapper">
+						<div class="modal-button__wrapper">
 							<Button
 								@click.native="userLogin"
 								:positive="true"
@@ -71,10 +71,10 @@ section {
 	justify-content: space-between;
 	align-items: stretch;
 
-	.input-wrapper {
+	.modal-input__wrapper {
 		width: 60%;
 	}
-	.button-wrapper {
+	.modal-button__wrapper {
 		width: 35%;
 		display: flex;
 		flex-direction: column;
