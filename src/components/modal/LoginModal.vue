@@ -44,19 +44,21 @@ export default {
 		async userLogin() {
 			const email = document.querySelector('#login-email').value;
 			const password = document.querySelector('#login-password').value;
-			const res = await login({
-				email: email,
-				password: password,
-			});
-			if (res.status === 200) {
+			try {
+				const res = await login({
+					email: email,
+					password: password,
+				});
 				this.$store.dispatch('login', res.data);
 				this.$emit('close');
-			} else if (res.status === 400) {
-				alert('로그인 정보를 확인해주세요.');
-			} else if (res.status === 500) {
-				alert('서버가 요청을 처리할 수 없습니다.');
-			} else {
-				alert(`오류입니다. (status: ${res.status}) 문의해주세요.`);
+			} catch (error) {
+				if (error.response.status === 400) {
+					alert('로그인 정보를 확인해주세요.');
+				} else if (error.response.status === 500) {
+					alert('서버가 요청을 처리할 수 없습니다.');
+				} else {
+					alert(`오류입니다. (status: ${error.response.status}) 문의해주세요.`);
+				}
 			}
 		},
 	},
