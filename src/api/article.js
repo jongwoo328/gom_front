@@ -16,4 +16,18 @@ function submitArticle(articleData) {
 	return article.post('', articleData);
 }
 
-export { fetchArticle, createComment, submitArticle, bookmarkArticle };
+function fetchArticleList(page) {
+	return article.get('', {
+		params: {
+			page: page,
+		},
+	});
+}
+
+export {
+	fetchArticle,
+	createComment,
+	submitArticle,
+	bookmarkArticle,
+	fetchArticleList,
+};
