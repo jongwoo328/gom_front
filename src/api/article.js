@@ -1,11 +1,8 @@
 import { article } from './index';
 
+// Article
 function fetchArticle(articleId) {
 	return article.get(`${articleId}/`);
-}
-
-function createComment(articleId, commentData) {
-	return article.post(`${articleId}/comment/`, commentData);
 }
 
 function deleteComment(articleId, commentId) {
@@ -20,10 +17,20 @@ function submitArticle(articleData) {
 	return article.post('', articleData);
 }
 
+// Comment
+function createComment(articleId, commentData) {
+	return article.post(`${articleId}/comment/`, commentData);
+}
+
+function fetchComment(articleId) {
+	return article.get(`${articleId}/comment/`);
+}
+
 export {
 	fetchArticle,
 	createComment,
 	submitArticle,
 	bookmarkArticle,
 	deleteComment,
+	fetchComment,
 };

@@ -23,7 +23,6 @@
 import CommentForm from '@/components/articles/CommentForm.vue';
 import { fetchArticle, bookmarkArticle } from '@/api/article';
 import { customDate } from '@/util/date';
-import { mapGetters } from 'vuex';
 
 export default {
 	components: {
@@ -81,7 +80,6 @@ export default {
 		},
 	},
 	computed: {
-		...mapGetters(['getUserData']),
 		isVaildComment() {
 			return this.commentData.commentInput ? true : false;
 		},

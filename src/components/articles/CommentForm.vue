@@ -8,30 +8,37 @@
 			:key="comment.id"
 			v-for="comment in commentData.commentsArray"
 		>
-			<CommentCard />
-			<div v-if="(open = comment.isClick)">
-				assdfsfsdf
-			</div>
-			<div v-else></div>
+			<CommentCard
+				class="comment-card"
+				:comment="comment"
+				@click="comment.isClick = true"
+			/>
+			<section>
+				<form
+					v-if="comment.isClick"
+					class="comment-form"
+					@submit.prevent="submitComment"
+				>
+					<div class="comment-box">
+						<p>{{ getUserData.username }}</p>
+						<input
+							class="comment-input"
+							type="text"
+							v-model="commentData.commentInput"
+						/>
+						<button :disabled="!isVaildComment" class="comment-submit__button">
+							작성
+						</button>
+					</div>
+				</form>
+			</section>
+
 			<div
 				class="childcomment-wrap"
 				:key="childcomment.id"
 				v-for="childcomment in comment.child_comments"
 			>
-				<div class="comment-box">
-					<i class="icon ion-md-return-right"></i>
-					<p class="comment-username">
-						{{ comment.user.username }}
-					</p>
-					<p class="comment-content">
-						{{ comment.content }}
-					</p>
-					<i
-						v-if="comment.user.id === getUserData.pk"
-						class="icon ion-md-close icon-close"
-						@click="submitDeleteComment(comment.id)"
-					></i>
-				</div>
+				<CommentCard :comment="comment" />
 			</div>
 			<span></span>
 		</article>
@@ -52,22 +59,29 @@
 </template>
 
 <script>
-import { createComment, deleteComment, fetchArticle } from '@/api/article';
+import CommentCard from './CommentCard.vue';
+import { createComment, deleteComment, fetchComment } from '@/api/article';
 import { mapGetters } from 'vuex';
 export default {
-	props: {
-		commentData: Object,
+	components: {
+		CommentCard,
+	},
+	data() {
+		return {
+			commentData: {
+				commentArray: [],
+				commentCnt: null,
+			},
+		};
 	},
 	methods: {
 		async fetchData() {
 			try {
-				const { data } = await fetchArticle(1);
-				// comment
-				this.commentData.commentsArray = data.data.comments;
+				const { data } = await fetchComment(1);
+				console.log(data);
+				this.commentData.commentsArray = data;
 				this.commentData.commentsArray.forEach(el => (el['isClick'] = false));
-				this.commentData.commentCnt = data.data.comments.length;
-				this.articleData.bookmarkCnt = data.bookmark_count;
-				this.articleData.isBookmark = data.is_bookmarked;
+				this.commentData.commentCnt = data.length;
 			} catch (error) {
 				console.log(error);
 			}
@@ -99,14 +113,9 @@ export default {
 		isVaildComment() {
 			return this.commentData.commentInput ? true : false;
 		},
-		open: {
-			get() {
-				return true;
-			},
-			set(value) {
-				return value ? true : false;
-			},
-		},
+	},
+	created() {
+		this.fetchData();
 	},
 };
 </script>
@@ -128,17 +137,10 @@ export default {
 	.comment-wrap {
 		display: flex;
 		flex-direction: column;
-		.comment-box {
-			display: flex;
-			.comment-content {
-				margin-left: 1rem;
+		.comment-card {
+			&:hover {
+				cursor: pointer;
 			}
-			i {
-				margin-right: 0.5rem;
-			}
-		}
-		.childcomment-wrap {
-			border-top: 0.5px solid $green;
 		}
 		span {
 			width: 100%;
@@ -161,8 +163,14 @@ export default {
 		.comment-submit__button {
 			width: 50px;
 			height: 30px;
-			background: $green;
-			color: white;
+			border: 1px solid black;
+			border-radius: 4px;
+			&:hover {
+				cursor: pointer;
+				color: white;
+				background: $green;
+				border: none;
+			}
 		}
 	}
 }

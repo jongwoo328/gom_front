@@ -1,6 +1,10 @@
 <template>
 	<section>
-		<div class="comment-box" @click="comment.isClick = !comment.isClick">
+		<div class="comment-box">
+			<i
+				v-if="comment.parent_comment !== null"
+				class="icon ion-md-return-right"
+			></i>
 			<p class="comment-username">
 				{{ comment.user.username }}
 			</p>
@@ -13,69 +17,18 @@
 				@click="submitDeleteComment(comment.id)"
 			></i>
 		</div>
-		<div :v-if="comment.isClick">
-			<CoComment :parentCommentId="comment.id" />
-		</div>
-		<div
-			class="childcomment-wrap"
-			:key="childcomment.id"
-			v-for="childcomment in comment.child_comments"
-		>
-			<div class="comment-box">
-				<i class="icon ion-md-return-right"></i>
-				<p class="comment-username">
-					{{ comment.user.username }}
-				</p>
-				<p class="comment-content">
-					{{ comment.content }}
-				</p>
-				<i
-					v-if="comment.user.id === getUserData.pk"
-					class="icon ion-md-close icon-close"
-					@click="submitDeleteComment(comment.id)"
-				></i>
-			</div>
-		</div>
-
 		<span></span>
 	</section>
 </template>
 
 <script>
+import { deleteComment } from '@/api/article';
 import { mapGetters } from 'vuex';
-import { createComment, deleteComment, fetchArticle } from '@/api/article';
-
 export default {
 	props: {
 		comment: Object,
 	},
 	methods: {
-		async fetchData() {
-			try {
-				const { data } = await fetchArticle(1);
-				// comment
-				this.commentData.commentsArray = data.data.comments;
-				this.commentData.commentsArray.forEach(el => (el['isClick'] = false));
-				this.commentData.commentCnt = data.data.comments.length;
-				this.articleData.bookmarkCnt = data.bookmark_count;
-				this.articleData.isBookmark = data.is_bookmarked;
-			} catch (error) {
-				console.log(error);
-			}
-		},
-		async submitComment() {
-			try {
-				const commentData = {
-					content: this.commentData.commentInput,
-					parent_comment: null,
-				};
-				await createComment(1, commentData);
-				this.commentData.commentInput = null;
-				this.fetchData();
-			} catch (error) {
-				console.log(error);
-			}
-		},
 		async submitDeleteComment(commentId) {
 			try {
 				await deleteComment(1, commentId);
@@ -87,9 +40,6 @@ export default {
 	},
 	computed: {
 		...mapGetters(['getUserData']),
-		isVaildComment() {
-			return this.commentData.commentInput ? true : false;
-		},
 	},
 };
 </script>

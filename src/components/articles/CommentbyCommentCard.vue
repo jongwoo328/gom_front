@@ -68,8 +68,13 @@ export default {
 	.comment-submit__button {
 		width: 50px;
 		height: 30px;
-		background: $green;
-		color: white;
+		border: none;
+		border-radius: 4px;
+		&:hover {
+			cursor: pointer;
+			background: $green;
+			color: white;
+		}
 	}
 }
 </style>
