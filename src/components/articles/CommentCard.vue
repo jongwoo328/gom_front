@@ -1,6 +1,9 @@
 <template>
 	<section>
-		<div class="comment-box">
+		<div
+			:class="comment.parent_comment === null ? 'comment-box' : 'cocomment-box'"
+			@click="isClick = !isClick"
+		>
 			<i
 				v-if="comment.parent_comment !== null"
 				class="icon ion-md-return-right"
@@ -18,17 +21,52 @@
 			></i>
 		</div>
 		<span></span>
+		<section v-if="comment.parent_comment === null">
+			<form v-if="isClick" class="comment-form" @submit.prevent="submitComment">
+				<div class="comment-box">
+					<i class="icon ion-md-return-right"></i>
+					<p>{{ getUserData.username }}</p>
+					<input class="comment-input" type="text" v-model="commentInput" />
+					<button :disabled="!isVaildComment" class="comment-submit__button">
+						작성
+					</button>
+				</div>
+			</form>
+		</section>
 	</section>
 </template>
 
 <script>
-import { deleteComment } from '@/api/article';
+import { createCoByComment, deleteComment } from '@/api/article';
 import { mapGetters } from 'vuex';
 export default {
 	props: {
 		comment: Object,
 	},
+	data() {
+		return {
+			isClick: this.comment.isClick,
+			commentInput: '',
+		};
+	},
 	methods: {
+		fetchData() {
+			console.log('!!');
+			this.$emit('fetchData');
+		},
+		async submitComment() {
+			try {
+				const commentData = {
+					content: this.commentInput,
+				};
+				await createCoByComment(1, this.comment.id, commentData);
+				this.commentInput = '';
+				this.isClick = false;
+				this.fetchData();
+			} catch (error) {
+				console.log(error);
+			}
+		},
 		async submitDeleteComment(commentId) {
 			try {
 				await deleteComment(1, commentId);
@@ -40,6 +78,9 @@ export default {
 	},
 	computed: {
 		...mapGetters(['getUserData']),
+		isVaildComment() {
+			return this.commentInput ? true : false;
+		},
 	},
 };
 </script>
@@ -47,6 +88,15 @@ export default {
 <style lang="scss" scoped>
 .comment-box {
 	display: flex;
+	position: relative;
+	.comment-content {
+		margin-left: 1rem;
+	}
+}
+.cocomment-box {
+	display: flex;
+	background: $lightgreen;
+	position: relative;
 	.comment-content {
 		margin-left: 1rem;
 	}
@@ -85,5 +135,7 @@ span {
 
 .icon-close {
 	color: red;
+	position: absolute;
+	right: 0;
 }
 </style>

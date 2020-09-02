@@ -9,36 +9,18 @@
 			v-for="comment in commentData.commentsArray"
 		>
 			<CommentCard
+				@fetchData="fetchData"
 				class="comment-card"
 				:comment="comment"
-				@click="comment.isClick = true"
 			/>
-			<section>
-				<form
-					v-if="comment.isClick"
-					class="comment-form"
-					@submit.prevent="submitComment"
+			<div v-if="comment.parent_comment === null">
+				<div
+					class="childcomment-wrap"
+					:key="childcomment.id"
+					v-for="childcomment in comment.child_comments"
 				>
-					<div class="comment-box">
-						<p>{{ getUserData.username }}</p>
-						<input
-							class="comment-input"
-							type="text"
-							v-model="commentData.commentInput"
-						/>
-						<button :disabled="!isVaildComment" class="comment-submit__button">
-							작성
-						</button>
-					</div>
-				</form>
-			</section>
-
-			<div
-				class="childcomment-wrap"
-				:key="childcomment.id"
-				v-for="childcomment in comment.child_comments"
-			>
-				<CommentCard :comment="comment" />
+					<CommentCard :comment="childcomment" />
+				</div>
 			</div>
 			<span></span>
 		</article>
@@ -77,11 +59,14 @@ export default {
 	methods: {
 		async fetchData() {
 			try {
+				this.commentData.commentCnt = 0;
 				const { data } = await fetchComment(1);
-				console.log(data);
 				this.commentData.commentsArray = data;
-				this.commentData.commentsArray.forEach(el => (el['isClick'] = false));
-				this.commentData.commentCnt = data.length;
+				this.commentData.commentsArray.forEach(el => {
+					el['isClick'] = false;
+					this.commentData.commentCnt += el.child_comments.length;
+				});
+				this.commentData.commentCnt += data.length;
 			} catch (error) {
 				console.log(error);
 			}

@@ -21,7 +21,10 @@ function submitArticle(articleData) {
 function createComment(articleId, commentData) {
 	return article.post(`${articleId}/comment/`, commentData);
 }
-
+function createCoByComment(articleId, commentId, commentData) {
+	console.log(`${articleId}/comment/${commentId}/`);
+	return article.post(`${articleId}/comment/${commentId}/`, commentData);
+}
 function fetchComment(articleId) {
 	return article.get(`${articleId}/comment/`);
 }
@@ -33,4 +36,5 @@ export {
 	bookmarkArticle,
 	deleteComment,
 	fetchComment,
+	createCoByComment,
 };
