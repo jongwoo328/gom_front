@@ -1,5 +1,5 @@
 <template>
-	<div class="container">
+	<div>
 		<ArticleTable :articles="articles"></ArticleTable>
 		<sliding-pagination
 			class="silding-bar"
