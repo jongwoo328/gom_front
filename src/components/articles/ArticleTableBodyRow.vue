@@ -73,7 +73,9 @@ export default {
 	}
 }
 .table-childArticle__row {
-	margin: 5px 0;
+	margin: 0;
+	padding: 7px 0;
+	background-color: rgba(34, 155, 84, 0.2);
 	.article-child__sign {
 		margin-right: 20px;
 	}
