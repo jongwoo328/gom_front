@@ -1,7 +1,18 @@
 <template>
-	<article :id="`article-${article.id}`" class="table-article__row">
-		<div class="No" scope="col" v-text="article.id"></div>
+	<article
+		:id="`article-${article.id}`"
+		:class="[
+			'table-article__row',
+			article.parent_article ? 'table-childArticle__row' : '',
+		]"
+	>
+		<div class="No" scope="col">
+			{{ article.parent_article ? '' : article.id }}
+		</div>
 		<div class="title" scope="col">
+			<span v-if="article.parent_article" class="article-child__sign">
+				<i class="icon ion-md-return-right"></i>
+			</span>
 			<router-link
 				:to="{
 					name: 'ArticleDetail',
@@ -16,21 +27,6 @@
 		<div class="auther" scope="col" v-text="article.user.username"></div>
 		<div class="date" scope="col" v-text="articleDate"></div>
 		<div class="scrap-num" scope="col" v-text="article.liked_user.length"></div>
-		<!-- <div
-			class="click-num"
-			scope="col"
-			v-text="hasChild"
-			@click="showChild = !showChild"
-		></div> -->
-		<!-- <div style="position: relative;" v-if="showChild">
-			<div v-if="article.child_articles.length" style="position: absolute;">
-				<ul style=" border: 1px solid green">
-					<li v-for="article in article.child_articles" :key="article.id">
-						{{ article.title }}
-					</li>
-				</ul>
-			</div>
-		</div> -->
 	</article>
 </template>
 
@@ -74,6 +70,12 @@ export default {
 		overflow: hidden;
 		white-space: nowrap;
 		text-overflow: ellipsis;
+	}
+}
+.table-childArticle__row {
+	margin: 5px 0;
+	.article-child__sign {
+		margin-right: 20px;
 	}
 }
 </style>
