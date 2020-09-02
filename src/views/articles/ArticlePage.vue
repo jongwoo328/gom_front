@@ -33,7 +33,15 @@ export default {
 		async getArticles() {
 			try {
 				const res = await fetchArticleList(this.currentPage);
-				this.articles = res.data.articles;
+				// this.articles = res.data.articles;
+				const articleWithChild = Array();
+				res.data.articles.forEach(article => {
+					articleWithChild.push(article);
+					article.child_articles.forEach(child => {
+						articleWithChild.push(child);
+					});
+				});
+				this.articles = articleWithChild;
 				this.totalPages = Math.ceil(res.data.totalArticleCount / 10);
 			} catch (error) {
 				alert(error);
