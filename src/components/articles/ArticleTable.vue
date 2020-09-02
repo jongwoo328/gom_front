@@ -1,19 +1,18 @@
 <template>
-	<div>
-		<table class="table-container">
-			<thead class="table-header">
-				<tr>
-					<th class="No" scope="col">번호</th>
-					<th class="title" scope="col">제목</th>
-					<th class="auther" scope="col">글쓴이</th>
-					<th class="date" scope="col">날짜</th>
-					<th class="scrap-num" scope="col">스크랩</th>
-					<th class="click-num" scope="col">답글</th>
-				</tr>
-			</thead>
-			<ArticleTableBody :articles="articles"></ArticleTableBody>
-		</table>
-	</div>
+	<section class="table">
+		<header class="table-header">
+			<div class="table-header__row">
+				<div class="No" scope="col">번호</div>
+				<div class="title" scope="col">제목</div>
+				<div class="auther" scope="col">글쓴이</div>
+				<div class="date" scope="col">날짜</div>
+				<div class="scrap-num" scope="col">스크랩</div>
+				<!-- <div class="click-num" scope="col">답글</div> -->
+			</div>
+		</header>
+
+		<ArticleTableBody :articles="articles"></ArticleTableBody>
+	</section>
 </template>
 
 <script>
@@ -34,42 +33,76 @@ export default {
 </script>
 
 <style lang="scss">
-.table-container {
+.table {
 	margin-top: 5rem;
+	// width: 100%;
+	// border-spacing: 0;
+	// // border: 1px solid gray;
 	width: 100%;
-	border-spacing: 0;
-	// border: 1px solid gray;
+	font-size: 1rem;
+	@media screen and (min-width: 768px) {
+		font-size: 1rem;
+	}
 	.table-header {
-		height: 35px;
 		color: $green;
-		th {
-			border-bottom: 3px solid $green;
-			text-align: center !important;
+		border-bottom: 3px solid $green;
+		text-align: center !important;
+		.table-header__row {
+			height: 25px;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
 		}
 	}
 	.No {
 		width: 10%;
-		text-align: center;
+		// text-align: center;
 	}
 	.title {
-		text-align: left;
-		width: 50%;
+		// text-align: left;
+		width: 40%;
 	}
 	.auther {
-		text-align: center;
-		width: 10%;
+		// text-align: center;
+		width: 15%;
 	}
 	.date {
-		width: 15%;
-		text-align: center;
+		width: 20%;
+		// text-align: center;
 	}
 	.scrap-num {
-		width: 5%;
-		text-align: center;
+		width: 15%;
+		// text-align: center;
 	}
-	.click-num {
-		width: 10%;
-		text-align: center;
+	// .click-num {
+	// 	width: 10%;
+	// 	// text-align: center;
+	// }
+	@media screen and (min-width: 768px) {
+		.No {
+			width: 10%;
+			// text-align: center;
+		}
+		.title {
+			// text-align: left;
+			width: 55%;
+		}
+		.auther {
+			// text-align: center;
+			width: 10%;
+		}
+		.date {
+			width: 15%;
+			// text-align: center;
+		}
+		.scrap-num {
+			width: 10%;
+			// text-align: center;
+		}
+		// .click-num {
+		// 	width: 10%;
+		// 	// text-align: center;
+		// }
 	}
 }
 .silding-bar {

@@ -1,12 +1,12 @@
 <template>
-	<tbody class="table-body">
+	<main class="table-body">
 		<ArticleTableBodyRow
 			v-for="article in articles"
 			:key="article.id"
 			:article="article"
 		>
 		</ArticleTableBodyRow>
-	</tbody>
+	</main>
 </template>
 
 <script>
