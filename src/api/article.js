@@ -17,7 +17,6 @@ function submitArticle(articleData) {
 	return article.post('', articleData);
 }
 
-// Comment
 function createComment(articleId, commentData) {
 	return article.post(`${articleId}/comment/`, commentData);
 }
@@ -27,6 +26,13 @@ function createCoByComment(articleId, commentId, commentData) {
 }
 function fetchComment(articleId) {
 	return article.get(`${articleId}/comment/`);
+
+function fetchArticleList(page) {
+	return article.get('', {
+		params: {
+			page: page,
+		},
+	});
 }
 
 export {
@@ -37,4 +43,5 @@ export {
 	deleteComment,
 	fetchComment,
 	createCoByComment,
+	fetchArticleList,
 };
