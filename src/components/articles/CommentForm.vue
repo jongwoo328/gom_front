@@ -1,0 +1,165 @@
+<template>
+	<section class="comment-container">
+		<span class="comment-cnt"
+			><span></span> 댓글 {{ commentData.commentCnt }}개</span
+		>
+		<article
+			class="comment-wrap"
+			:key="comment.id"
+			v-for="comment in commentData.commentsArray"
+		>
+			<CommentCard
+				@fetchData="fetchData"
+				class="comment-card"
+				:comment="comment"
+			/>
+			<div v-if="comment.parent_comment === null">
+				<div
+					class="childcomment-wrap"
+					:key="childcomment.id"
+					v-for="childcomment in comment.child_comments"
+				>
+					<CommentCard :comment="childcomment" />
+				</div>
+			</div>
+			<span></span>
+		</article>
+		<form class="comment-form" @submit.prevent="submitComment">
+			<div class="comment-box">
+				<p>{{ getUserData.username }}</p>
+				<input
+					class="comment-input"
+					type="text"
+					v-model="commentData.commentInput"
+				/>
+				<button :disabled="!isVaildComment" class="comment-submit__button">
+					작성
+				</button>
+			</div>
+		</form>
+	</section>
+</template>
+
+<script>
+import CommentCard from './CommentCard.vue';
+import { createComment, deleteComment, fetchComment } from '@/api/article';
+import { mapGetters } from 'vuex';
+export default {
+	components: {
+		CommentCard,
+	},
+	data() {
+		return {
+			commentData: {
+				commentArray: [],
+				commentCnt: null,
+			},
+		};
+	},
+	methods: {
+		async fetchData() {
+			try {
+				this.commentData.commentCnt = 0;
+				const { data } = await fetchComment(1);
+				this.commentData.commentsArray = data;
+				this.commentData.commentsArray.forEach(el => {
+					el['isClick'] = false;
+					this.commentData.commentCnt += el.child_comments.length;
+				});
+				this.commentData.commentCnt += data.length;
+			} catch (error) {
+				console.log(error);
+			}
+		},
+		async submitComment() {
+			try {
+				const commentData = {
+					content: this.commentData.commentInput,
+					parent_comment: null,
+				};
+				await createComment(1, commentData);
+				this.commentData.commentInput = null;
+				this.fetchData();
+			} catch (error) {
+				console.log(error);
+			}
+		},
+		async submitDeleteComment(commentId) {
+			try {
+				await deleteComment(1, commentId);
+				this.fetchData();
+			} catch (error) {
+				console.log(error);
+			}
+		},
+	},
+	computed: {
+		...mapGetters(['getUserData']),
+		isVaildComment() {
+			return this.commentData.commentInput ? true : false;
+		},
+	},
+	created() {
+		this.fetchData();
+	},
+};
+</script>
+
+<style lang="scss" scoped>
+.comment-container {
+	display: flex;
+	flex-direction: column;
+	margin-top: 2rem;
+	.comment-cnt {
+		color: $green;
+		span {
+			display: inline-block;
+			width: 2px;
+			height: 20px;
+			background: $yellow;
+		}
+	}
+	.comment-wrap {
+		display: flex;
+		flex-direction: column;
+		.comment-card {
+			&:hover {
+				cursor: pointer;
+			}
+		}
+		span {
+			width: 100%;
+			height: 1px;
+			background: $gray;
+		}
+	}
+	.comment-form {
+		display: flex;
+		flex-direction: column;
+		.comment-box {
+			display: flex;
+		}
+		.comment-input {
+			width: 80%;
+			margin-left: 1rem;
+			padding: 0.5rem;
+			border-bottom: 2px solid black;
+		}
+		.comment-submit__button {
+			width: 50px;
+			height: 30px;
+			border: 1px solid black;
+			border-radius: 4px;
+			&:hover {
+				cursor: pointer;
+				color: white;
+				background: $green;
+				border: none;
+			}
+		}
+	}
+}
+.icon-close {
+	color: red;
+}
+</style>

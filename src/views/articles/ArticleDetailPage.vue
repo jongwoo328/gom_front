@@ -15,61 +15,19 @@
 				<p>{{ articleData.bookmarkCnt }}</p>
 			</section>
 		</section>
-		<section class="comment-container">
-			<span class="comment-cnt"
-				><span></span> 댓글 {{ commentData.commentCnt }}개</span
-			>
-			<article
-				class="comment-wrap"
-				:key="comment.id"
-				v-for="comment in commentData.commentsArray"
-			>
-				<div class="comment-box">
-					<p class="comment-username">
-						{{ comment.user.username }}
-					</p>
-					<p class="comment-content">
-						{{ comment.content }}
-					</p>
-				</div>
-				<div
-					class="childcomment-wrap"
-					:key="childcomment.id"
-					v-for="childcomment in comment.child_comments"
-				>
-					<div class="comment-box">
-						<i class="icon ion-md-return-right"></i>
-						<p class="comment-username">
-							{{ comment.user.username }}
-						</p>
-						<p class="comment-content">
-							{{ comment.content }}
-						</p>
-					</div>
-				</div>
-
-				<span></span>
-			</article>
-			<form class="comment-form" @submit.prevent="submitComment">
-				<p>{{ getUserData.username }}</p>
-				<input
-					class="comment-input"
-					type="text"
-					v-model="commentData.commentInput"
-				/>
-				<button :disabled="!isVaildComment" class="comment-submit__button">
-					작성
-				</button>
-			</form>
-		</section>
+		<CommentForm :commentData="commentData" />
 	</section>
 </template>
 
 <script>
-import { fetchArticle, createComment, bookmarkArticle } from '@/api/article';
+import CommentForm from '@/components/articles/CommentForm.vue';
+import { fetchArticle, bookmarkArticle } from '@/api/article';
 import { customDate } from '@/util/date';
-import { mapGetters } from 'vuex';
+
 export default {
+	components: {
+		CommentForm,
+	},
 	data() {
 		return {
 			articleData: {
@@ -103,6 +61,7 @@ export default {
 				this.articleData.date = customDate(data.data.created_at);
 				// comment
 				this.commentData.commentsArray = data.data.comments;
+				this.commentData.commentsArray.forEach(el => (el['isClick'] = false));
 				this.commentData.commentCnt = data.data.comments.length;
 				this.articleData.bookmarkCnt = data.bookmark_count;
 				this.articleData.isBookmark = data.is_bookmarked;
@@ -119,23 +78,15 @@ export default {
 				console.log(error);
 			}
 		},
-		async submitComment() {
-			try {
-				const commentData = {
-					content: this.commentData.commentInput,
-				};
-				await createComment(1, commentData);
-				this.fetchData();
-			} catch (error) {
-				console.log(error);
-			}
-		},
 	},
 	computed: {
-		...mapGetters(['getUserData']),
 		isVaildComment() {
 			return this.commentData.commentInput ? true : false;
 		},
+		// openCoComment(commentId) {
+		// 	return !this.commentData.commentsArray.filter(el => el.id === commentId)
+		// 		.isClick;
+		// },
 	},
 	created() {
 		this.fetchData();
@@ -175,57 +126,6 @@ export default {
 		}
 		.bookmark-black {
 			color: gray;
-		}
-	}
-}
-.comment-container {
-	display: flex;
-	flex-direction: column;
-	margin-top: 2rem;
-	.comment-cnt {
-		color: $green;
-		span {
-			display: inline-block;
-			width: 2px;
-			height: 20px;
-			background: $yellow;
-		}
-	}
-	.comment-wrap {
-		display: flex;
-		flex-direction: column;
-		.comment-box {
-			display: flex;
-			.comment-content {
-				margin-left: 1rem;
-			}
-			i {
-				margin-right: 0.5rem;
-			}
-		}
-		.childcomment-wrap {
-			border-top: 0.5px solid $green;
-		}
-		span {
-			width: 100%;
-			height: 1px;
-			background: $gray;
-		}
-	}
-	.comment-form {
-		display: flex;
-
-		.comment-input {
-			width: 80%;
-			margin-left: 1rem;
-			padding: 0.5rem;
-			border-bottom: 2px solid black;
-		}
-		.comment-submit__button {
-			width: 50px;
-			height: 30px;
-			background: $green;
-			color: white;
 		}
 	}
 }
