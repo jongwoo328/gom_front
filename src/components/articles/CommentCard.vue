@@ -51,7 +51,6 @@ export default {
 	},
 	methods: {
 		fetchData() {
-			console.log('!!');
 			this.$emit('fetchData');
 		},
 		async submitComment() {
