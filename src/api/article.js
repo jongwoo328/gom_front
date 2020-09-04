@@ -1,7 +1,7 @@
-import { article } from './index';
+import { article, articleNoAuth } from './index';
 
 function fetchArticle(articleId) {
-	return article.get(`${articleId}/`);
+	return articleNoAuth.get(`${articleId}/`);
 }
 
 function updateArticle(articleId) {
@@ -32,11 +32,15 @@ function createCoByComment(articleId, commentId, commentData) {
 }
 
 function fetchComment(articleId) {
+<<<<<<< HEAD
 	return article.get(`${articleId}/comment/`);
+=======
+	return articleNoAuth.get(`${articleId}/comment/`);
+>>>>>>> e9eeba552d58fb68e56067282fdceb2e2e8a7550
 }
 
 function fetchArticleList(page) {
-	return article.get('', {
+	return articleNoAuth.get('', {
 		params: {
 			page: page,
 		},

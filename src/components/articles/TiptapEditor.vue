@@ -268,7 +268,7 @@ export default {
 			const articleId = this.$route.params.articleId;
 			const { data } = await fetchArticle(articleId);
 			if (this.getUserData.username !== data.data.user.username) {
-				this.$router.push({ name: 'Articles' });
+				this.$router.push({ name: '404' });
 			}
 			this.editor = new Editor({
 				extensions: [
@@ -331,9 +331,11 @@ export default {
 			} catch (error) {
 				if (error.response) {
 					if (error.response.status === 400) {
-						alert('로그인 정보를 확인해주세요.');
+						alert('잘못된 요청입니다.');
 					} else if (error.response.status === 500) {
 						alert('서버가 요청을 처리할 수 없습니다.');
+					} else if (error.response.status === 401) {
+						alert('로그인 정보를 확인해주세요.');
 					} else {
 						alert(
 							`오류입니다. (status: ${error.response.status}) 문의해주세요.`,
