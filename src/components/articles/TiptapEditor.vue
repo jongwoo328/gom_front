@@ -209,13 +209,16 @@ import {
 	Image,
 } from 'tiptap-extensions';
 import Button from '@/components/common/Button.vue';
-import { submitArticle } from '@/api/article.js';
+import { submitArticle, updateArticle } from '@/api/article.js';
 
 export default {
 	components: {
 		EditorContent,
 		EditorMenuBar,
 		Button,
+	},
+	props: {
+		status: String,
 	},
 	data() {
 		return {
@@ -224,29 +227,34 @@ export default {
 		};
 	},
 	mounted() {
-		this.editor = new Editor({
-			extensions: [
-				new Blockquote(),
-				new BulletList(),
-				new CodeBlock(),
-				new HardBreak(),
-				new Heading({ levels: [1, 2, 3] }),
-				new HorizontalRule(),
-				new ListItem(),
-				new Image(),
-				new OrderedList(),
-				new TodoItem(),
-				new TodoList(),
-				new Link(),
-				new Bold(),
-				new Code(),
-				new Italic(),
-				new Strike(),
-				new Underline(),
-				new History(),
-			],
-			content: '',
-		});
+		const isCreate = this.$route.params.articleId ? false : true;
+		if (isCreate) {
+			this.editor = new Editor({
+				extensions: [
+					new Blockquote(),
+					new BulletList(),
+					new CodeBlock(),
+					new HardBreak(),
+					new Heading({ levels: [1, 2, 3] }),
+					new HorizontalRule(),
+					new ListItem(),
+					new Image(),
+					new OrderedList(),
+					new TodoItem(),
+					new TodoList(),
+					new Link(),
+					new Bold(),
+					new Code(),
+					new Italic(),
+					new Strike(),
+					new Underline(),
+					new History(),
+				],
+				content: '',
+			});
+		} else {
+			console.log('!!');
+		}
 	},
 	methods: {
 		showImagePrompt(command) {
@@ -257,18 +265,35 @@ export default {
 		},
 		async submit() {
 			try {
-				const res = await submitArticle({
-					title: this.title,
-					content: this.editor.getHTML(),
-				});
-				if (res.status === 201) {
-					alert('작성완료');
-					this.$router.push({
-						name: 'ArticleDetail',
-						params: {
-							ariticleId: res.data.id,
-						},
+				if (this.status == 'create') {
+					const res = await submitArticle({
+						title: this.title,
+						content: this.editor.getHTML(),
 					});
+					if (res.status === 201) {
+						alert('작성완료');
+						this.$router.push({
+							name: 'ArticleDetail',
+							params: {
+								ariticleId: res.data.id,
+							},
+						});
+					}
+				}
+				if (this.status == 'update') {
+					const res = await updateArticle({
+						title: this.title,
+						content: this.editor.getHTML(),
+					});
+					if (res.status === 201) {
+						alert('작성완료');
+						this.$router.push({
+							name: 'ArticleDetail',
+							params: {
+								ariticleId: res.data.id,
+							},
+						});
+					}
 				}
 			} catch (error) {
 				if (error.response) {
