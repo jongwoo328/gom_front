@@ -31,6 +31,8 @@
 </template>
 
 <script>
+import { isSameDay } from '@/util/date.js';
+
 export default {
 	props: {
 		article: Object,
@@ -43,13 +45,14 @@ export default {
 	computed: {
 		articleDate() {
 			const date = new Date(this.article.created_at);
-			return `${('0' + (date.getMonth() + 1)).slice(-2)}-${date.getDate()}`;
-		},
-		hasChild() {
-			if (this.article.child_articles.length) {
-				return 'O';
+			const now = new Date(Date.now());
+			if (isSameDay(now, date)) {
+				return `${date.getHours()}:${date.getMinutes()}`;
 			}
-			return 'X';
+			date.setMonth(date.getMonth() + 1);
+			return `${('0' + date.getMonth()).slice(-2)}-${(
+				'0' + date.getDate()
+			).slice(-2)}`;
 		},
 	},
 	methods: {},
