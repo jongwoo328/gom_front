@@ -51,8 +51,7 @@ export default {
 	methods: {
 		async fetchData() {
 			try {
-				const { data } = await fetchArticle(1);
-				console.log(data);
+				const { data } = await fetchArticle(2);
 				this.articleData.title = data.data.title;
 				this.articleData.content = data.data.content;
 				this.articleData.auther = data.data.user.username;
@@ -71,7 +70,7 @@ export default {
 		},
 		async bookmark() {
 			try {
-				const { data } = await bookmarkArticle(1);
+				const { data } = await bookmarkArticle(2);
 				this.articleData.isBookmark = !this.articleData.isBookmark;
 				this.articleData.bookmarkCnt += data;
 			} catch (error) {
