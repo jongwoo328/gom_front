@@ -209,8 +209,8 @@ import {
 	Image,
 } from 'tiptap-extensions';
 import Button from '@/components/common/Button.vue';
-import { submitArticle, updateArticle } from '@/api/article.js';
-
+import { fetchArticle, submitArticle, updateArticle } from '@/api/article.js';
+import { mapGetters } from 'vuex';
 export default {
 	components: {
 		EditorContent,
@@ -224,6 +224,7 @@ export default {
 		return {
 			editor: null,
 			title: '',
+			id: null,
 		};
 	},
 	mounted() {
@@ -253,7 +254,7 @@ export default {
 				content: '',
 			});
 		} else {
-			console.log('!!');
+			this.fetchData();
 		}
 	},
 	methods: {
@@ -262,6 +263,38 @@ export default {
 			if (src !== null) {
 				command({ src });
 			}
+		},
+		async fetchData() {
+			const articleId = this.$route.params.articleId;
+			const { data } = await fetchArticle(articleId);
+			if (this.getUserData.username !== data.data.user.username) {
+				this.$router.push({ name: 'Articles' });
+			}
+			this.editor = new Editor({
+				extensions: [
+					new Blockquote(),
+					new BulletList(),
+					new CodeBlock(),
+					new HardBreak(),
+					new Heading({ levels: [1, 2, 3] }),
+					new HorizontalRule(),
+					new ListItem(),
+					new Image(),
+					new OrderedList(),
+					new TodoItem(),
+					new TodoList(),
+					new Link(),
+					new Bold(),
+					new Code(),
+					new Italic(),
+					new Strike(),
+					new Underline(),
+					new History(),
+				],
+				content: data.data.content,
+			});
+			this.title = data.data.title;
+			this.id = data.data.id;
 		},
 		async submit() {
 			try {
@@ -314,6 +347,9 @@ export default {
 	},
 	beforeDestroy() {
 		this.editor.destroy();
+	},
+	computed: {
+		...mapGetters(['getUserData']),
 	},
 };
 </script>

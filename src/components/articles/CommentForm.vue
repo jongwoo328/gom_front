@@ -25,7 +25,11 @@
 			</div>
 			<span></span>
 		</article>
-		<form class="comment-form" @submit.prevent="submitComment">
+		<form
+			v-if="isLoggedIn"
+			class="comment-form"
+			@submit.prevent="submitComment"
+		>
 			<div class="comment-box">
 				<p>{{ getUserData.username }}</p>
 				<input
@@ -101,7 +105,7 @@ export default {
 		},
 	},
 	computed: {
-		...mapGetters(['getUserData']),
+		...mapGetters(['getUserData', 'isLoggedIn']),
 		isVaildComment() {
 			return this.commentData.commentInput ? true : false;
 		},

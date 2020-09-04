@@ -24,6 +24,14 @@ const routes = [
 		name: 'ArticleUpdate',
 		component: () => import('@/views/articles/CreateArticlePage.vue'),
 	},
+	{
+		path: '*',
+		redirect: '/404',
+	},
+	{
+		path: '/404',
+		component: () => import('@/views/NotFoundPage.vue'),
+	},
 ];
 
 const router = new VueRouter({

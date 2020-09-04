@@ -32,7 +32,6 @@ function createCoByComment(articleId, commentId, commentData) {
 }
 
 function fetchComment(articleId) {
-	console.log(articleId);
 	return article.get(`${articleId}/comment/`);
 }
 

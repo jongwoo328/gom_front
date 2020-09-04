@@ -21,7 +21,7 @@
 			></i>
 		</div>
 		<span></span>
-		<section v-if="comment.parent_comment === null">
+		<section v-if="isLoggedIn && comment.parent_comment === null">
 			<form v-if="isClick" class="comment-form" @submit.prevent="submitComment">
 				<div class="comment-box">
 					<i class="icon ion-md-return-right"></i>
@@ -79,7 +79,7 @@ export default {
 		},
 	},
 	computed: {
-		...mapGetters(['getUserData']),
+		...mapGetters(['getUserData', 'isLoggedIn']),
 		isVaildComment() {
 			return this.commentInput ? true : false;
 		},

@@ -1,7 +1,7 @@
 <template>
 	<section>
 		<h2>{{ title }}</h2>
-		<TiptapEditor />
+		<TiptapEditor :status="status" />
 	</section>
 </template>
 
@@ -13,7 +13,6 @@ export default {
 	},
 	data() {
 		return {
-			title: null,
 			status: null,
 		};
 	},
