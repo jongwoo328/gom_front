@@ -14,14 +14,22 @@
 				</p>
 				<p>{{ articleData.bookmarkCnt }}</p>
 			</section>
+			<section class="update__delete-box">
+				<button class="update-btn">
+					<router-link :to="`/article/${articleData.id}/update`"
+						>수정</router-link
+					>
+				</button>
+				<button class="delete-btn" @click="deleteArticle">삭제</button>
+			</section>
 		</section>
-		<CommentForm :commentData="commentData" />
+		<CommentForm :articleId="articleData.id" :commentData="commentData" />
 	</section>
 </template>
 
 <script>
 import CommentForm from '@/components/articles/CommentForm.vue';
-import { fetchArticle, bookmarkArticle } from '@/api/article';
+import { fetchArticle, deleteArticle, bookmarkArticle } from '@/api/article';
 import { customDate } from '@/util/date';
 
 export default {
@@ -31,6 +39,7 @@ export default {
 	data() {
 		return {
 			articleData: {
+				id: null,
 				title: null,
 				content: null,
 				auther: null,
@@ -45,14 +54,12 @@ export default {
 			},
 		};
 	},
-	props: {
-		articleId: Number,
-	},
 	methods: {
 		async fetchData() {
 			try {
-				const { data } = await fetchArticle(1);
-				console.log(data);
+				const articleId = this.$route.params.articleId;
+				const { data } = await fetchArticle(articleId);
+				this.articleData.id = parseInt(articleId);
 				this.articleData.title = data.data.title;
 				this.articleData.content = data.data.content;
 				this.articleData.auther = data.data.user.username;
@@ -71,9 +78,19 @@ export default {
 		},
 		async bookmark() {
 			try {
-				const { data } = await bookmarkArticle(1);
+				const articleId = this.articleData.id;
+				const { data } = await bookmarkArticle(articleId);
 				this.articleData.isBookmark = !this.articleData.isBookmark;
 				this.articleData.bookmarkCnt += data;
+			} catch (error) {
+				console.log(error);
+			}
+		},
+		async deleteArticle() {
+			try {
+				const articleId = this.articleData.id;
+				await deleteArticle(articleId);
+				this.$router.push({ name: 'Articles' });
 			} catch (error) {
 				console.log(error);
 			}
@@ -83,10 +100,6 @@ export default {
 		isVaildComment() {
 			return this.commentData.commentInput ? true : false;
 		},
-		// openCoComment(commentId) {
-		// 	return !this.commentData.commentsArray.filter(el => el.id === commentId)
-		// 		.isClick;
-		// },
 	},
 	created() {
 		this.fetchData();
@@ -126,6 +139,30 @@ export default {
 		}
 		.bookmark-black {
 			color: gray;
+		}
+		&:hover {
+			cursor: pointer;
+		}
+	}
+	.update__delete-box {
+		display: flex;
+		justify-content: flex-end;
+		.update-btn {
+			margin-right: 10px;
+			width: 50px;
+			height: 30px;
+			border: 1px solid $green;
+			border-radius: 5px;
+			background: white;
+			color: $green;
+		}
+		.delete-btn {
+			width: 50px;
+			height: 30px;
+			background: $green;
+			border: none;
+			border-radius: 5px;
+			color: white;
 		}
 	}
 }

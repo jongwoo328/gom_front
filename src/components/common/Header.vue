@@ -14,6 +14,11 @@
 					<li v-if="!this.isLoggedIn" @click="showLogin">
 						로그인
 					</li>
+					<li v-if="this.isLoggedIn">
+						<router-link class="create-link" :to="{ name: 'ArticleCreate' }">
+							글작성
+						</router-link>
+					</li>
 					<li v-if="this.isLoggedIn" @click="logout">
 						로그아웃
 					</li>
@@ -79,7 +84,9 @@ export default {
 			li {
 				margin: 0 10px;
 				color: white;
-
+				.create-link {
+					color: white;
+				}
 				&:hover {
 					cursor: pointer;
 				}

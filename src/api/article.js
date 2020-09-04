@@ -1,10 +1,16 @@
 import { article } from './index';
 
-// Article
 function fetchArticle(articleId) {
 	return article.get(`${articleId}/`);
 }
 
+function updateArticle(articleId) {
+	return article.patch(`${articleId}/`);
+}
+
+function deleteArticle(articleId) {
+	return article.delete(`${articleId}/`);
+}
 function deleteComment(articleId, commentId) {
 	return article.delete(`${articleId}/comment/${commentId}`);
 }
@@ -22,11 +28,11 @@ function createComment(articleId, commentData) {
 }
 
 function createCoByComment(articleId, commentId, commentData) {
-	console.log(`${articleId}/comment/${commentId}/`);
 	return article.post(`${articleId}/comment/${commentId}/`, commentData);
 }
 
 function fetchComment(articleId) {
+	console.log(articleId);
 	return article.get(`${articleId}/comment/`);
 }
 
@@ -40,6 +46,8 @@ function fetchArticleList(page) {
 
 export {
 	fetchArticle,
+	updateArticle,
+	deleteArticle,
 	createComment,
 	submitArticle,
 	bookmarkArticle,

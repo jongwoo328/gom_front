@@ -42,6 +42,7 @@ import { mapGetters } from 'vuex';
 export default {
 	props: {
 		comment: Object,
+		articleId: Number,
 	},
 	data() {
 		return {
@@ -51,7 +52,6 @@ export default {
 	},
 	methods: {
 		fetchData() {
-			console.log('!!');
 			this.$emit('fetchData');
 		},
 		async submitComment() {
@@ -59,7 +59,8 @@ export default {
 				const commentData = {
 					content: this.commentInput,
 				};
-				await createCoByComment(1, this.comment.id, commentData);
+				const articleId = this.articleId;
+				await createCoByComment(articleId, this.comment.id, commentData);
 				this.commentInput = '';
 				this.isClick = false;
 				this.fetchData();
@@ -69,7 +70,8 @@ export default {
 		},
 		async submitDeleteComment(commentId) {
 			try {
-				await deleteComment(1, commentId);
+				const articleId = this.articleId;
+				await deleteComment(articleId, commentId);
 				this.fetchData();
 			} catch (error) {
 				console.log(error);

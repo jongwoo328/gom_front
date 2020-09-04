@@ -11,6 +11,7 @@
 			<CommentCard
 				@fetchData="fetchData"
 				class="comment-card"
+				:articleId="articleId"
 				:comment="comment"
 			/>
 			<div v-if="comment.parent_comment === null">
@@ -19,7 +20,7 @@
 					:key="childcomment.id"
 					v-for="childcomment in comment.child_comments"
 				>
-					<CommentCard :comment="childcomment" />
+					<CommentCard :articleId="articleId" :comment="childcomment" />
 				</div>
 			</div>
 			<span></span>
@@ -48,6 +49,9 @@ export default {
 	components: {
 		CommentCard,
 	},
+	props: {
+		articleId: Number,
+	},
 	data() {
 		return {
 			commentData: {
@@ -59,8 +63,9 @@ export default {
 	methods: {
 		async fetchData() {
 			try {
+				const articleId = this.$route.params.articleId;
 				this.commentData.commentCnt = 0;
-				const { data } = await fetchComment(1);
+				const { data } = await fetchComment(articleId);
 				this.commentData.commentsArray = data;
 				this.commentData.commentsArray.forEach(el => {
 					el['isClick'] = false;
@@ -73,11 +78,12 @@ export default {
 		},
 		async submitComment() {
 			try {
+				const articleId = this.articleId;
 				const commentData = {
 					content: this.commentData.commentInput,
 					parent_comment: null,
 				};
-				await createComment(1, commentData);
+				await createComment(articleId, commentData);
 				this.commentData.commentInput = null;
 				this.fetchData();
 			} catch (error) {
@@ -86,7 +92,8 @@ export default {
 		},
 		async submitDeleteComment(commentId) {
 			try {
-				await deleteComment(1, commentId);
+				const articleId = this.articleId;
+				await deleteComment(articleId, commentId);
 				this.fetchData();
 			} catch (error) {
 				console.log(error);
