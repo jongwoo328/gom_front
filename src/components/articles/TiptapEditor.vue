@@ -268,7 +268,7 @@ export default {
 			const articleId = this.$route.params.articleId;
 			const { data } = await fetchArticle(articleId);
 			if (this.getUserData.username !== data.data.user.username) {
-				this.$router.push({ name: '404' });
+				this.$router.push({ path: '/404' });
 			}
 			this.editor = new Editor({
 				extensions: [
@@ -303,27 +303,28 @@ export default {
 						title: this.title,
 						content: this.editor.getHTML(),
 					});
+					console.log(res);
 					if (res.status === 201) {
 						alert('작성완료');
 						this.$router.push({
 							name: 'ArticleDetail',
 							params: {
-								ariticleId: res.data.id,
+								articleId: res.data.id,
 							},
 						});
 					}
 				}
 				if (this.status == 'update') {
-					const res = await updateArticle({
+					const res = await updateArticle(this.id, {
 						title: this.title,
 						content: this.editor.getHTML(),
 					});
 					if (res.status === 201) {
-						alert('작성완료');
+						alert('수정완료');
 						this.$router.push({
 							name: 'ArticleDetail',
 							params: {
-								ariticleId: res.data.id,
+								articleId: res.data.id,
 							},
 						});
 					}

@@ -4,8 +4,8 @@ function fetchArticle(articleId) {
 	return articleNoAuth.get(`${articleId}/`);
 }
 
-function updateArticle(articleId) {
-	return article.patch(`${articleId}/`);
+function updateArticle(articleId, articleData) {
+	return article.patch(`${articleId}/`, articleData);
 }
 
 function deleteArticle(articleId) {
@@ -32,11 +32,7 @@ function createCoByComment(articleId, commentId, commentData) {
 }
 
 function fetchComment(articleId) {
-<<<<<<< HEAD
-	return article.get(`${articleId}/comment/`);
-=======
 	return articleNoAuth.get(`${articleId}/comment/`);
->>>>>>> e9eeba552d58fb68e56067282fdceb2e2e8a7550
 }
 
 function fetchArticleList(page) {
