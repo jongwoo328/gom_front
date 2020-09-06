@@ -99,9 +99,10 @@ export default {
 	position: relative;
 	padding: 0.3rem;
 	align-items: center;
-	.ion-md-return-right {
-		margin-right: 1rem;
-	}
+}
+.ion-md-return-right {
+	margin-right: 1rem;
+	margin-left: 6%;
 }
 .comment-username {
 	display: flex;
@@ -178,7 +179,7 @@ span {
 	}
 }
 .icon-close {
-	color: red;
+	color: rgb(255, 115, 115);
 	position: absolute;
 	right: 0;
 }
