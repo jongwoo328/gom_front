@@ -3,7 +3,11 @@
 		<section class="aritcle-container">
 			<header class="article-header">
 				<h1>{{ articleData.title }}</h1>
-				<p>{{ articleData.auther }} | {{ articleData.date }}</p>
+				<div class="article-header__box">
+					<p class="article-auther">{{ articleData.auther }}</p>
+					<p class="article-wall">|</p>
+					<p class="article-date">{{ articleData.date }}</p>
+				</div>
 				<span class="article-header-underline"></span>
 			</header>
 			<article class="article-body" v-html="articleData.content"></article>
@@ -120,6 +124,26 @@ export default {
 		display: flex;
 		flex-direction: column;
 		margin-top: 3rem;
+		h1 {
+			margin-bottom: 1rem;
+			font-size: 1.5rem;
+		}
+		.article-header__box {
+			color: gray;
+			display: flex;
+			align-items: center;
+			.article-auther {
+				font-size: 1.2rem;
+			}
+			.article-wall {
+				margin-left: 0.5rem;
+				margin-right: 0.5rem;
+			}
+			.article-date {
+				font-size: 0.8rem;
+			}
+		}
+
 		.article-header-underline {
 			margin-top: 1rem;
 			width: 100%;

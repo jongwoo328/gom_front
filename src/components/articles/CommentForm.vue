@@ -31,7 +31,7 @@
 			@submit.prevent="submitComment"
 		>
 			<div class="comment-box">
-				<p>{{ getUserData.username }}</p>
+				<p class="comment-box__username">{{ getUserData.username }}</p>
 				<input
 					class="comment-input"
 					type="text"
@@ -123,11 +123,14 @@ export default {
 	margin-top: 2rem;
 	.comment-cnt {
 		color: $green;
+		display: flex;
 		span {
 			display: inline-block;
 			width: 2px;
-			height: 20px;
+			height: 16px;
 			background: $yellow;
+			margin-right: 0.4rem;
+			margin-bottom: 1rem;
 		}
 	}
 	.comment-wrap {
@@ -149,17 +152,20 @@ export default {
 		flex-direction: column;
 		.comment-box {
 			display: flex;
+			align-items: center;
 		}
 		.comment-input {
-			width: 80%;
-			margin-left: 1rem;
+			width: 100%;
+			margin-right: 1rem;
 			padding: 0.5rem;
-			border-bottom: 2px solid black;
+			border: 1px solid $green;
+			border-radius: 5px;
 		}
 		.comment-submit__button {
 			width: 50px;
-			height: 30px;
-			border: 1px solid black;
+			height: 33px;
+			font-size: 0.8rem;
+			border: 1px solid gray;
 			border-radius: 4px;
 			&:hover {
 				cursor: pointer;
@@ -167,6 +173,21 @@ export default {
 				background: $green;
 				border: none;
 			}
+			&:disabled {
+				&:hover {
+					cursor: pointer;
+					color: gray;
+					background: white;
+					border: 1px solid gray;
+				}
+			}
+		}
+		.comment-box__username {
+			display: flex;
+			align-items: center;
+			height: 33px;
+			justify-content: center;
+			width: 15%;
 		}
 	}
 }
