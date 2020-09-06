@@ -109,11 +109,11 @@ export default {
 	width: 10%;
 	justify-content: center;
 	font-size: 1.1rem;
-	border: 1px solid $yellow;
-	border-radius: 5px;
+	font-weight: bold;
 }
 .comment-content {
 	margin-left: 1rem;
+	font-size: 0.8rem;
 }
 .comment-wall {
 	margin-left: 0.5rem;
@@ -145,11 +145,13 @@ span {
 		border-radius: 5px;
 	}
 	.comment-submit__button {
-		width: 50px;
+		width: 55px;
 		height: 33px;
+		border: 1px solid $green;
+		border-radius: 5px;
+		background: white;
+		color: black;
 		font-size: 0.8rem;
-		border: 1px solid gray;
-		border-radius: 4px;
 		&:hover {
 			cursor: pointer;
 			color: white;
@@ -158,10 +160,10 @@ span {
 		}
 		&:disabled {
 			&:hover {
-				cursor: pointer;
-				color: gray;
+				cursor: default;
 				background: white;
-				border: 1px solid gray;
+				color: black;
+				border: 1px solid $green;
 			}
 		}
 	}
@@ -171,6 +173,8 @@ span {
 		height: 33px;
 		justify-content: center;
 		width: 15%;
+		font-size: 1.1rem;
+		font-weight: bold;
 	}
 }
 .icon-close {

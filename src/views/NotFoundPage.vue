@@ -25,8 +25,6 @@ export default {};
 		height: 50%;
 	}
 }
-.text-box {
-}
 .common-button {
 	background-color: white;
 	color: $green;

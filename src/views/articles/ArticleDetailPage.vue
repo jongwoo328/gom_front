@@ -145,7 +145,7 @@ export default {
 		}
 
 		.article-header-underline {
-			margin-top: 1rem;
+			margin-top: 0.4rem;
 			width: 100%;
 			height: 2px;
 			background: $gray;

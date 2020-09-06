@@ -23,7 +23,7 @@
 					<CommentCard :articleId="articleId" :comment="childcomment" />
 				</div>
 			</div>
-			<span></span>
+			<!-- <span></span> -->
 		</article>
 		<form
 			v-if="isLoggedIn"
@@ -150,6 +150,7 @@ export default {
 	.comment-form {
 		display: flex;
 		flex-direction: column;
+		margin-top: 1rem;
 		.comment-box {
 			display: flex;
 			align-items: center;
@@ -162,11 +163,13 @@ export default {
 			border-radius: 5px;
 		}
 		.comment-submit__button {
-			width: 50px;
+			width: 55px;
 			height: 33px;
+			border: 1px solid $green;
+			border-radius: 5px;
+			background: white;
+			color: black;
 			font-size: 0.8rem;
-			border: 1px solid gray;
-			border-radius: 4px;
 			&:hover {
 				cursor: pointer;
 				color: white;
@@ -175,10 +178,10 @@ export default {
 			}
 			&:disabled {
 				&:hover {
-					cursor: pointer;
-					color: gray;
+					cursor: default;
 					background: white;
-					border: 1px solid gray;
+					color: black;
+					border: 1px solid $green;
 				}
 			}
 		}
@@ -188,6 +191,8 @@ export default {
 			height: 33px;
 			justify-content: center;
 			width: 15%;
+			font-size: 1.1rem;
+			font-weight: bold;
 		}
 	}
 }
