@@ -4,7 +4,9 @@
 		<div class="yellow"></div>
 		<div class="green">
 			<router-link :to="{ name: 'Articles' }">
-				<h1 id="title">곰 보드</h1>
+				<h1 id="title">
+					곰 보드
+				</h1>
 			</router-link>
 			<nav>
 				<ul>

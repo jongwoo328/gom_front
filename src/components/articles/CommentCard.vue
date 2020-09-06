@@ -25,7 +25,7 @@
 			<form v-if="isClick" class="comment-form" @submit.prevent="submitComment">
 				<div class="comment-box">
 					<i class="icon ion-md-return-right"></i>
-					<p>{{ getUserData.username }}</p>
+					<p class="comment-box__username">{{ getUserData.username }}</p>
 					<input class="comment-input" type="text" v-model="commentInput" />
 					<button :disabled="!isVaildComment" class="comment-submit__button">
 						작성
@@ -91,20 +91,36 @@ export default {
 .comment-box {
 	display: flex;
 	position: relative;
-	.comment-content {
-		margin-left: 1rem;
-	}
+	padding: 0.3rem;
+	align-items: center;
 }
 .cocomment-box {
 	display: flex;
-	background: $lightgreen;
 	position: relative;
-	.comment-content {
-		margin-left: 1rem;
-	}
-	i {
-		margin-right: 0.5rem;
-	}
+	padding: 0.3rem;
+	align-items: center;
+}
+.ion-md-return-right {
+	margin-right: 1rem;
+	margin-left: 6%;
+}
+.comment-username {
+	display: flex;
+	align-items: center;
+	width: 10%;
+	justify-content: center;
+	font-size: 1.1rem;
+	font-weight: bold;
+}
+.comment-content {
+	margin-left: 1rem;
+	font-size: 0.8rem;
+}
+.comment-wall {
+	margin-left: 0.5rem;
+}
+i {
+	margin-right: 0.5rem;
 }
 .childcomment-wrap {
 	border-top: 0.5px solid $green;
@@ -120,23 +136,50 @@ span {
 	flex-direction: column;
 	.comment-box {
 		display: flex;
+		align-items: center;
 	}
 	.comment-input {
-		width: 80%;
-		margin-left: 1rem;
+		width: 100%;
+		margin-right: 1rem;
 		padding: 0.5rem;
-		border-bottom: 2px solid black;
+		border: 1px solid $green;
+		border-radius: 5px;
 	}
 	.comment-submit__button {
-		width: 50px;
-		height: 30px;
-		background: $green;
-		color: white;
+		width: 55px;
+		height: 33px;
+		border: 1px solid $green;
+		border-radius: 5px;
+		background: white;
+		color: black;
+		font-size: 0.8rem;
+		&:hover {
+			cursor: pointer;
+			color: white;
+			background: $green;
+			border: none;
+		}
+		&:disabled {
+			&:hover {
+				cursor: default;
+				background: white;
+				color: black;
+				border: 1px solid $green;
+			}
+		}
+	}
+	.comment-box__username {
+		display: flex;
+		align-items: center;
+		height: 33px;
+		justify-content: center;
+		width: 15%;
+		font-size: 1.1rem;
+		font-weight: bold;
 	}
 }
-
 .icon-close {
-	color: red;
+	color: rgb(255, 115, 115);
 	position: absolute;
 	right: 0;
 }
