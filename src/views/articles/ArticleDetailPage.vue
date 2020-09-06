@@ -14,7 +14,7 @@
 				</p>
 				<p>{{ articleData.bookmarkCnt }}</p>
 			</section>
-			<section class="update__delete-box">
+			<section v-if="isMe" class="update__delete-box">
 				<button class="update-btn">
 					<router-link :to="`/article/${articleData.id}/update`"
 						>수정</router-link
@@ -31,6 +31,7 @@
 import CommentForm from '@/components/articles/CommentForm.vue';
 import { fetchArticle, deleteArticle, bookmarkArticle } from '@/api/article';
 import { customDate } from '@/util/date';
+import { mapGetters } from 'vuex';
 
 export default {
 	components: {
@@ -97,8 +98,14 @@ export default {
 		},
 	},
 	computed: {
+		...mapGetters(['getUserData']),
 		isVaildComment() {
 			return this.commentData.commentInput ? true : false;
+		},
+		isMe() {
+			return this.articleData.auther === this.getUserData.username
+				? true
+				: false;
 		},
 	},
 	created() {
